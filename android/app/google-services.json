@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "603032301274",
+    "project_id": "pingpong-mix-dev",
+    "storage_bucket": "pingpong-mix-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:603032301274:android:eb7b2740efb3b64ebfffe3",
+        "android_client_info": {
+          "package_name": "com.example.pingpong_mix"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTaPWqbR3CX48sbxieslgDV5nmPmRyqeM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
