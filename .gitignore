@@ -50,3 +50,7 @@ app.*.map.json
 .env
 /venv
 /credentials
+
+# Flutter/Dart specific
+lib/generated_plugin_registrant.dart
+lib/generated_plugins.cmake
