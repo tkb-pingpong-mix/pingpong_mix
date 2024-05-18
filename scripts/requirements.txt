@@ -1,0 +1,4 @@
+# requirements.txt
+firebase-admin
+python-dotenv
+faker

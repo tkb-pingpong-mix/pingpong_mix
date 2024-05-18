@@ -44,3 +44,9 @@ app.*.map.json
 
 # gitignoreをpushする
 !*.gitignore
+
+# python script 関連
+# envを無視する
+.env
+/venv
+/credentials
