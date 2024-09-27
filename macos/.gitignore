@@ -10,3 +10,5 @@ Runner.xcodeproj/project.pbxproj
 Runner.xcodeproj/xcshareddata/
 Runner/Assets.xcassets/
 Runner/Base.lproj/
+
+Podfile.lock
