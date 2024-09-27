@@ -1,1 +1,71 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"pingpong-mix-dev","appId":"1:603032301274:android:eb7b2740efb3b64ebfffe3","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"pingpong-mix-dev","appId":"1:603032301274:ios:95a4253a69d4dbcfbfffe3","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"macos":{"default":{"projectId":"pingpong-mix-dev","appId":"1:603032301274:ios:95a4253a69d4dbcfbfffe3","uploadDebugSymbols":false,"fileOutput":"macos/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"pingpong-mix-dev","configurations":{"android":"1:603032301274:android:eb7b2740efb3b64ebfffe3","ios":"1:603032301274:ios:95a4253a69d4dbcfbfffe3","macos":"1:603032301274:ios:95a4253a69d4dbcfbfffe3","web":"1:603032301274:web:bb8660d1a764fbc8bfffe3","windows":"1:603032301274:web:aaa4d26ecd8b0e38bfffe3"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "pingpong-mix-dev",
+          "appId": "1:603032301274:android:eb7b2740efb3b64ebfffe3",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "pingpong-mix-dev",
+          "appId": "1:603032301274:ios:95a4253a69d4dbcfbfffe3",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "macos": {
+        "default": {
+          "projectId": "pingpong-mix-dev",
+          "appId": "1:603032301274:ios:95a4253a69d4dbcfbfffe3",
+          "uploadDebugSymbols": false,
+          "fileOutput": "macos/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "pingpong-mix-dev",
+          "configurations": {
+            "android": "1:603032301274:android:eb7b2740efb3b64ebfffe3",
+            "ios": "1:603032301274:ios:95a4253a69d4dbcfbfffe3",
+            "macos": "1:603032301274:ios:95a4253a69d4dbcfbfffe3",
+            "web": "1:603032301274:web:bb8660d1a764fbc8bfffe3",
+            "windows": "1:603032301274:web:aaa4d26ecd8b0e38bfffe3"
+          }
+        }
+      }
+    }
+  },
+  "emulators": {
+    "singleProjectMode": true,
+    "auth": {
+      "port": 9099
+    },
+    "functions": {
+      "port": 5001
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "database": {
+      "port": 9000
+    },
+    "hosting": {
+      "port": 5000
+    },
+    "pubsub": {
+      "port": 8085
+    },
+    "storage": {
+      "port": 9199
+    },
+    "eventarc": {
+      "port": 9299
+    },
+    "ui": {
+      "enabled": true
+    }
+  }
+}
