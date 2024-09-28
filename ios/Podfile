@@ -39,6 +39,23 @@ end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
+    # Flutter の追加ビルド設定を適用
     flutter_additional_ios_build_settings(target)
+
+    # `leveldb-library` の設定を修正
+    if target.name == 'leveldb-library'
+      target.build_configurations.each do |config|
+        config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++11'
+        config.build_settings['CLANG_CXX_LIBRARY'] = 'libc++'
+      end
+    end
+
+    # `gRPC` やその他ライブラリの設定（必要に応じて追加）
+    if ['gRPC-Core', 'gRPC-C++', 'BoringSSL-GRPC'].include? target.name
+      target.build_configurations.each do |config|
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+      end
+    end
   end
 end
+
