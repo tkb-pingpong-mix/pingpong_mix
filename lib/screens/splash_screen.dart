@@ -6,8 +6,9 @@ class SplashScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Future.delayed(Duration(seconds: 2), () {
-      final user = ref.read(authProvider);
-      if (user != null) {
+      final authState = ref.read(authProvider); // AuthState を取得
+      if (authState.user != null) {
+        // AuthState 内の user が null かどうかを判定
         Navigator.pushReplacementNamed(context, '/home');
       } else {
         Navigator.pushReplacementNamed(context, '/auth');
