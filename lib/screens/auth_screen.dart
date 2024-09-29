@@ -8,6 +8,8 @@ class AuthScreen extends ConsumerWidget {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _smsController = TextEditingController();
 
+  AuthScreen({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authViewModel = ref.watch(authViewModelProvider.notifier);
@@ -33,10 +35,10 @@ class AuthScreen extends ConsumerWidget {
             if (isCodeSent)
               TextField(
                 controller: _smsController,
-                decoration: InputDecoration(labelText: 'SMS Code'),
+                decoration: const InputDecoration(labelText: 'SMS Code'),
                 keyboardType: TextInputType.number,
               ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 if (isCodeSent) {
@@ -60,7 +62,7 @@ class AuthScreen extends ConsumerWidget {
                 padding: const EdgeInsets.only(top: 10.0),
                 child: Text(
                   errorMessage,
-                  style: TextStyle(color: Colors.red),
+                  style: const TextStyle(color: Colors.red),
                 ),
               ),
           ],

@@ -3,9 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pingpong_mix/providers/auth_provider.dart';
 
 class SplashScreen extends ConsumerWidget {
+  const SplashScreen({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2), () {
       final authState = ref.read(authProvider); // AuthState を取得
       if (authState.user != null) {
         // AuthState 内の user が null かどうかを判定
@@ -15,7 +17,7 @@ class SplashScreen extends ConsumerWidget {
       }
     });
 
-    return Scaffold(
+    return const Scaffold(
       body: Center(child: CircularProgressIndicator()),
     );
   }

@@ -5,7 +5,7 @@ class PhoneNumberInput extends StatelessWidget {
   final TextEditingController phoneController;
   final void Function(String) onPhoneNumberSubmitted;
 
-  PhoneNumberInput({
+  const PhoneNumberInput({super.key, 
     required this.phoneController,
     required this.onPhoneNumberSubmitted,
   });
@@ -25,7 +25,7 @@ class PhoneNumberInput extends StatelessWidget {
             FilteringTextInputFormatter.allow(RegExp(r'^\+?[0-9]*$')),
           ],
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         ElevatedButton(
           onPressed: () {
             String phoneNumber = phoneController.text.trim();

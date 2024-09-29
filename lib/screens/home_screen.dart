@@ -10,6 +10,8 @@ import 'package:pingpong_mix/providers/auth_provider.dart';
 final currentIndexProvider = StateProvider<int>((ref) => 0);
 
 class HomeScreen extends ConsumerWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final int currentIndex = ref.watch(currentIndexProvider);
@@ -24,10 +26,10 @@ class HomeScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: const Text('Home'),
         actions: [
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             onPressed: () async {
               await authViewModel.signOut();
               Navigator.pushReplacementNamed(context, '/auth');
