@@ -59,7 +59,7 @@ class AuthScreen extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 10.0),
                 child: Text(
-                  errorMessage!,
+                  errorMessage,
                   style: TextStyle(color: Colors.red),
                 ),
               ),
