@@ -18,10 +18,10 @@ class HomeScreen extends ConsumerWidget {
     final authViewModel = ref.read(authProvider.notifier);
 
     final List<Widget> pages = [
-      MatchingScreen(),
-      ChatScreen(),
-      EventListScreen(),
-      ProfileEditScreen(),
+      const MatchingScreen(),
+      const ChatScreen(),
+      const EventListScreen(),
+      const ProfileEditScreen(),
     ];
 
     return Scaffold(

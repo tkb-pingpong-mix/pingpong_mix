@@ -50,7 +50,7 @@ class AuthScreen extends ConsumerWidget {
                   if (ref.read(authViewModelProvider).user != null) {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                      MaterialPageRoute(builder: (context) => const HomeScreen()),
                     );
                   }
                 }
