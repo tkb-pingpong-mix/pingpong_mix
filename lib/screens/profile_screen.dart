@@ -34,7 +34,7 @@ class ProfileScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 // プロフィール編集画面に遷移
-                context.push('/profile-edit');
+                context.go('/home/profile/edit');
               },
               child: const Text('Edit Profile'),
             ),

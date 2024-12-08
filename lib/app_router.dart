@@ -86,11 +86,10 @@ class AppRouter {
             path: '/home/profile',
             builder: (context, state) => const ProfileScreen(),
             routes: [
-              // GoRoute(
-              //   path: 'edit',
-              //   builder: (context, state) =>
-              //       ProfileEditScreen(post: state.extra as ProfileModel),
-              // ),
+              GoRoute(
+                path: 'edit',
+                builder: (context, state) => ProfileEditScreen(),
+              ),
             ],
           ),
           GoRoute(
