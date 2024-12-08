@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../viewmodels/auth_viewmodel.dart';
-import 'home_screen.dart';
 import 'package:pingpong_mix/widgets/phone_number_input.dart';
 
 class AuthScreen extends ConsumerWidget {
@@ -48,10 +48,7 @@ class AuthScreen extends ConsumerWidget {
 
                   // 認証が成功したら、ホーム画面へ遷移
                   if (ref.read(authViewModelProvider).user != null) {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const HomeScreen()),
-                    );
+                    context.go('/home/matching');
                   }
                 }
               },

@@ -21,15 +21,17 @@ dependencies:
   firebase_ui_firestore: ^1.6.4
   firebase_ui_database: ^1.4.4
   firebase_ui_oauth: ^1.5.3
+  go_router: ^14.3.0
+  go_router_builder: ^2.7.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
   riverpod_generator: ^2.4.0
   build_runner: ^2.4.9
-  custom_lint: ^0.6.4
+  custom_lint: ^0.7.0
   riverpod_lint: ^2.3.10
 
 flutter:
