@@ -55,6 +55,7 @@ class HomeScreen extends ConsumerWidget {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: (index) {
+          ref.read(currentIndexProvider.notifier).state = index;
           context.go(_tabs[index]['route']!);
         },
         items: _tabs
