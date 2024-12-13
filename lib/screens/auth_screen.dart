@@ -41,9 +41,17 @@ class AuthScreen extends ConsumerWidget {
                   _passwordController.text.trim(),
                 );
 
-                // 認証が成功したら、ホーム画面へ遷移
+                // 認証成功の場合のみ次の画面に進む
                 if (ref.read(authViewModelProvider).user != null) {
                   context.go('/home/matching');
+                } else {
+                  // 認証失敗の場合、エラーメッセージを表示
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(ref.read(authViewModelProvider).errorMessage ?? 'Sign-in failed'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
                 }
               },
               child: const Text('Sign In'),
@@ -56,9 +64,17 @@ class AuthScreen extends ConsumerWidget {
                   _passwordController.text.trim(),
                 );
 
-                // 登録が成功したら、ホーム画面へ遷移
+                // 登録成功の場合のみ次の画面に進む
                 if (ref.read(authViewModelProvider).user != null) {
                   context.go('/home/matching');
+                } else {
+                  // 登録失敗の場合、エラーメッセージを表示
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(ref.read(authViewModelProvider).errorMessage ?? 'Sign-up failed'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
                 }
               },
               child: const Text('Sign Up'),
