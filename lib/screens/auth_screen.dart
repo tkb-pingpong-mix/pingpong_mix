@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../viewmodels/auth_viewmodel.dart';
-import 'package:pingpong_mix/widgets/phone_number_input.dart';
 
 class AuthScreen extends ConsumerWidget {
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _smsController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   AuthScreen({super.key});
 
@@ -14,45 +13,55 @@ class AuthScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authViewModel = ref.watch(authViewModelProvider.notifier);
     final authState = ref.watch(authViewModelProvider);
-    final isCodeSent = authState.isCodeSent;
     final errorMessage = authState.errorMessage;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Phone Authentication')),
+      appBar: AppBar(title: const Text('Email Authentication')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (!isCodeSent)
-              PhoneNumberInput(
-                phoneController: _phoneController,
-                onPhoneNumberSubmitted: (phoneNumber) async {
-                  // 電話番号を使ってFirebaseの認証をリクエスト
-                  await authViewModel.verifyPhoneNumber(phoneNumber);
-                },
-              ),
-            if (isCodeSent)
-              TextField(
-                controller: _smsController,
-                decoration: const InputDecoration(labelText: 'SMS Code'),
-                keyboardType: TextInputType.number,
-              ),
+            TextField(
+              controller: _emailController,
+              decoration: const InputDecoration(labelText: 'Email'),
+              keyboardType: TextInputType.emailAddress,
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _passwordController,
+              decoration: const InputDecoration(labelText: 'Password'),
+              obscureText: true,
+            ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                if (isCodeSent) {
-                  // SMSコードを使ってサインイン/サインアップ
-                  await authViewModel
-                      .signUpWithSmsCode(_smsController.text.trim());
+                await authViewModel.signInWithEmailAndPassword(
+                  _emailController.text.trim(),
+                  _passwordController.text.trim(),
+                );
 
-                  // 認証が成功したら、ホーム画面へ遷移
-                  if (ref.read(authViewModelProvider).user != null) {
-                    context.go('/home/matching');
-                  }
+                // 認証が成功したら、ホーム画面へ遷移
+                if (ref.read(authViewModelProvider).user != null) {
+                  context.go('/home/matching');
                 }
               },
-              child: Text(isCodeSent ? 'Complete Verification' : 'Send Code'),
+              child: const Text('Sign In'),
+            ),
+            const SizedBox(height: 10),
+            TextButton(
+              onPressed: () async {
+                await authViewModel.signUpWithEmailAndPassword(
+                  _emailController.text.trim(),
+                  _passwordController.text.trim(),
+                );
+
+                // 登録が成功したら、ホーム画面へ遷移
+                if (ref.read(authViewModelProvider).user != null) {
+                  context.go('/home/matching');
+                }
+              },
+              child: const Text('Sign Up'),
             ),
             if (errorMessage != null)
               Padding(

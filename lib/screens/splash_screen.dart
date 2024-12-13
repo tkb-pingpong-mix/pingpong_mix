@@ -11,13 +11,12 @@ class SplashScreen extends ConsumerWidget {
     Future.delayed(const Duration(seconds: 2), () {
       final authState = ref.read(authProvider); // AuthState を取得
       //TODO: 必ずhomeを表示するようにしているため、元に戻す
-      // if (authState.user != null) {
-      //   // AuthState 内の user が null かどうかを判定
-      //   context.go('/home/matching');
-      // } else {
-      //   context.go('/auth');
-      // }
-      context.go('/home/matching');
+      if (authState.user != null) {
+        // AuthState 内の user が null かどうかを判定
+        context.go('/home/matching');
+      } else {
+        context.go('/auth');
+      }
     });
 
     return const Scaffold(

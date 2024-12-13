@@ -10,12 +10,10 @@ final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
 // 認証状態を表現するクラス
 class AuthState {
   final UserModel? user;
-  final bool isCodeSent; // SMSコードが送信されたかどうかを示す
   final String? errorMessage; // エラーメッセージ
 
   AuthState({
     this.user,
-    this.isCodeSent = false,
     this.errorMessage,
   });
 
@@ -23,7 +21,6 @@ class AuthState {
   factory AuthState.initial() {
     return AuthState(
       user: null,
-      isCodeSent: false,
       errorMessage: null,
     );
   }
@@ -31,12 +28,10 @@ class AuthState {
   // 状態のコピーを作成するメソッド
   AuthState copyWith({
     UserModel? user,
-    bool? isCodeSent,
     String? errorMessage,
   }) {
     return AuthState(
       user: user ?? this.user,
-      isCodeSent: isCodeSent ?? this.isCodeSent,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
@@ -45,61 +40,37 @@ class AuthState {
 // 認証ロジックを管理するクラス
 class AuthNotifier extends StateNotifier<AuthState> {
   final AuthService _authService;
-  String? _verificationId;
 
   // コンストラクタで依存関係を注入
   AuthNotifier(StateNotifierProviderRef<AuthNotifier, AuthState> ref)
       : _authService = ref.read(authServiceProvider),
         super(AuthState.initial());
 
-  // 電話番号の認証（SMSコード送信）
-  Future<void> verifyPhoneNumber(String phoneNumber) async {
+  // メールアドレスとパスワードでサインイン
+  Future<void> signInWithEmailAndPassword(String email, String password) async {
     state = state.copyWith(errorMessage: null); // エラーリセット
     try {
-      await _authService.verifyPhoneNumber(
-        phoneNumber,
-        (verificationId) {
-          _verificationId = verificationId;
-          state = state.copyWith(
-            isCodeSent: true,
-            errorMessage: null,
-          );
-        },
-        (error) {
-          state = state.copyWith(errorMessage: error);
-        },
-        () {
-          // 自動認証成功時の処理
-          state = state.copyWith(
-            isCodeSent: false,
-            errorMessage: "Automatic verification succeeded!",
-          );
-        },
+      final user = await _authService.signInWithEmailAndPassword(email, password);
+      state = state.copyWith(
+        user: UserModel(uid: user.uid, email: user.email),
+        errorMessage: null,
       );
     } catch (e) {
-      state = state.copyWith(
-        errorMessage: "Failed to send SMS: ${e.toString()}",
-      );
+      state = state.copyWith(errorMessage: "Failed to sign in: ${e.toString()}");
     }
   }
 
-  // SMSコードを使用して認証（サインイン/サインアップ）
-  Future<void> signInWithSmsCode(String smsCode) async {
+  // メールアドレスとパスワードでサインアップ
+  Future<void> signUpWithEmailAndPassword(String email, String password) async {
     state = state.copyWith(errorMessage: null); // エラーリセット
     try {
-      if (_verificationId != null) {
-        final user = await _authService.signInWithSmsCode(_verificationId!, smsCode);
-        if (user != null) {
-          state = state.copyWith(
-            user: UserModel(uid: user.uid, phoneNumber: user.phoneNumber ?? ''),
-            errorMessage: null,
-          );
-        }
-      } else {
-        throw Exception("Verification ID is null");
-      }
+      final user = await _authService.signUpWithEmailAndPassword(email, password);
+      state = state.copyWith(
+        user: UserModel(uid: user.uid, email: user.email),
+        errorMessage: null,
+      );
     } catch (e) {
-      state = state.copyWith(errorMessage: "Failed to sign in: ${e.toString()}");
+      state = state.copyWith(errorMessage: "Failed to sign up: ${e.toString()}");
     }
   }
 
