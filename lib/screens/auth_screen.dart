@@ -41,17 +41,24 @@ class AuthScreen extends ConsumerWidget {
                   _passwordController.text.trim(),
                 );
 
-                // 認証成功の場合のみ次の画面に進む
-                if (ref.read(authViewModelProvider).user != null) {
-                  context.go('/home/matching');
-                } else {
-                  // 認証失敗の場合、エラーメッセージを表示
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(ref.read(authViewModelProvider).errorMessage ?? 'Sign-in failed'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
+                // 認証状態を再確認
+                final updatedAuthState = ref.read(authViewModelProvider);
+
+                if (updatedAuthState.user != null) {
+                  // ユーザーが認証成功
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    context.go('/home/matching');
+                  });
+                } else if (updatedAuthState.errorMessage != null) {
+                  // エラーメッセージが存在する場合
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(updatedAuthState.errorMessage!),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  });
                 }
               },
               child: const Text('Sign In'),
@@ -71,7 +78,9 @@ class AuthScreen extends ConsumerWidget {
                   // 登録失敗の場合、エラーメッセージを表示
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text(ref.read(authViewModelProvider).errorMessage ?? 'Sign-up failed'),
+                      content: Text(
+                          ref.read(authViewModelProvider).errorMessage ??
+                              'Sign-up failed'),
                       backgroundColor: Colors.red,
                     ),
                   );
