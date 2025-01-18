@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingpong_mix/models/post_model.dart';
 import 'package:pingpong_mix/screens/chat_details_screen.dart';
@@ -105,9 +106,24 @@ class AppRouter {
                 builder: (context, state) => const ClanEditScreen(),
               ),
             ],
+            
           ),
         ],
       ),
     ],
+    redirect: (context, state) {
+            final isLoggedIn = FirebaseAuth.instance.currentUser != null;
+            final isAuthRoute = state.uri.toString() == '/auth';
+
+            if (!isLoggedIn && !isAuthRoute) {
+              return '/auth'; // 未ログインなら/authへリダイレクト
+            }
+
+            if (isLoggedIn && isAuthRoute) {
+              return '/home/matching'; // ログイン済みなら/home/matchingへリダイレクト
+            }
+
+            return null;
+          },
   );
 }

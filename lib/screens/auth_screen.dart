@@ -64,28 +64,15 @@ class AuthScreen extends ConsumerWidget {
               child: const Text('Sign In'),
             ),
             const SizedBox(height: 10),
-            TextButton(
-              onPressed: () async {
-                await authViewModel.signUpWithEmailAndPassword(
-                  _emailController.text.trim(),
-                  _passwordController.text.trim(),
-                );
-
-                // 登録成功の場合のみ次の画面に進む
-                if (ref.read(authViewModelProvider).user != null) {
-                  context.go('/home/matching');
-                } else {
-                  // 登録失敗の場合、エラーメッセージを表示
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                          ref.read(authViewModelProvider).errorMessage ??
-                              'Sign-up failed'),
-                      backgroundColor: Colors.red,
-                    ),
+                     ElevatedButton(
+            onPressed: () async {
+              await ref
+                  .read(authViewModelProvider.notifier)
+                  .signInWithEmailAndPassword(
+                    _emailController.text.trim(),
+                    _passwordController.text.trim(),
                   );
-                }
-              },
+            },
               child: const Text('Sign Up'),
             ),
             if (errorMessage != null)
