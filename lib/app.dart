@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pingpong_mix/app_router.dart';
+import 'package:pingpong_mix/utils/custom_colors.dart';
 
 class MyApp extends StatelessWidget {
   final AppRouter appRouter;
@@ -11,28 +12,28 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'PingPongMix',
       theme: ThemeData(
-        primaryColor: Colors.red,
-        scaffoldBackgroundColor: Colors.white,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.red,
-          titleTextStyle: TextStyle(
-            color: Colors.white,
+        primaryColor: CustomColors.primary,
+        scaffoldBackgroundColor: CustomColors.scaffoldBackground,
+        appBarTheme: AppBarTheme(
+          backgroundColor: CustomColors.appBarBackground,
+          titleTextStyle: const TextStyle(
+            color: CustomColors.appBarText,
             fontSize: 20.0,
           ),
         ),
-        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: Colors.black,
-          selectedItemColor: Colors.red,
-          unselectedItemColor: Colors.white70,
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: CustomColors.bottomNavBackground,
+          selectedItemColor: CustomColors.selectedItem,
+          unselectedItemColor: CustomColors.unselectedItem,
         ),
-        textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: Colors.black),
-          bodyMedium: TextStyle(color: Colors.black87),
-          bodySmall: TextStyle(color: Colors.black54),
+        textTheme: TextTheme(
+          bodyLarge: TextStyle(color: CustomColors.textPrimary),
+          bodyMedium: TextStyle(color: CustomColors.textSecondary),
+          bodySmall: TextStyle(color: CustomColors.textTertiary),
         ),
-        floatingActionButtonTheme: const FloatingActionButtonThemeData(
-          backgroundColor: Colors.red,
-          foregroundColor: Colors.white,
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: CustomColors.fabBackground,
+          foregroundColor: CustomColors.fabForeground,
         ),
       ),
       debugShowCheckedModeBanner: false,
