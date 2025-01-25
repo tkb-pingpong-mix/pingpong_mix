@@ -1,50 +1,80 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// User Model
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class UserModel {
-  final String uid; // Firebase AuthのユーザーID
-  final String? email; // ユーザーのメールアドレス
-  final String? phoneNumber; // ユーザーの電話番号（電話認証用）
-  final String? displayName; // ユーザー名
-  final String? photoURL; // プロフィール画像URL
+class AppUser {
+  final String userId;
+  final String email;
+  final String displayName;
+  final String profilePicture;
+  final String skillLevel;
+  final String region;
+  final String playStyle;
+  final DateTime createdAt;
+  final int totalWins;
+  final int totalLosses;
+  final double winRate;
+  final List<String> recentMatches;
+  final List<String> clans;
+  final List<String> events;
+  final List<String> posts;
 
-  UserModel({
-    required this.uid,
-    this.email,
-    this.phoneNumber,
-    this.displayName,
-    this.photoURL,
+  AppUser({
+    required this.userId,
+    required this.email,
+    required this.displayName,
+    required this.profilePicture,
+    required this.skillLevel,
+    required this.region,
+    required this.playStyle,
+    required this.createdAt,
+    required this.totalWins,
+    required this.totalLosses,
+    required this.winRate,
+    required this.recentMatches,
+    required this.clans,
+    required this.events,
+    required this.posts,
   });
 
-  // Firebase UserからUserModelを生成するファクトリメソッド
-  factory UserModel.fromFirebaseUser(User user) {
-    return UserModel(
-      uid: user.uid,
-      email: user.email,
-      phoneNumber: user.phoneNumber,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
+  factory AppUser.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+
+    return AppUser(
+      userId: data['userId'] ?? '',
+      email: data['email'] ?? '',
+      displayName: data['displayName'] ?? '',
+      profilePicture: data['profilePicture'] ?? '',
+      skillLevel: data['skillLevel'] ?? '',
+      region: data['region'] ?? '',
+      playStyle: data['playStyle'] ?? '',
+      createdAt: (data['createdAt'] as Timestamp).toDate(),
+      totalWins: data['totalWins'] ?? 0,
+      totalLosses: data['totalLosses'] ?? 0,
+      winRate: (data['winRate'] ?? 0).toDouble(),
+      recentMatches: List<String>.from(data['recentMatches'] ?? []),
+      clans: List<String>.from(data['clans'] ?? []),
+      events: List<String>.from(data['events'] ?? []),
+      posts: List<String>.from(data['posts'] ?? []),
     );
   }
 
-  // ユーザーデータをJSON形式に変換する（必要ならば使用）
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toFirestore() {
     return {
-      'uid': uid,
+      'userId': userId,
       'email': email,
-      'phoneNumber': phoneNumber,
       'displayName': displayName,
-      'photoURL': photoURL,
+      'profilePicture': profilePicture,
+      'skillLevel': skillLevel,
+      'region': region,
+      'playStyle': playStyle,
+      'createdAt': createdAt,
+      'totalWins': totalWins,
+      'totalLosses': totalLosses,
+      'winRate': winRate,
+      'recentMatches': recentMatches,
+      'clans': clans,
+      'events': events,
+      'posts': posts,
     };
-  }
-
-  // JSON形式からUserModelを生成する（必要ならば使用）
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
-      uid: json['uid'] as String,
-      email: json['email'] as String?,
-      phoneNumber: json['phoneNumber'] as String?,
-      displayName: json['displayName'] as String?,
-      photoURL: json['photoURL'] as String?,
-    );
   }
 }

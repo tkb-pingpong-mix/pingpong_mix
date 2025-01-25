@@ -9,7 +9,7 @@ final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
 
 // 認証状態を表現するクラス
 class AuthState {
-  final UserModel? user;
+  final AppUser? user;
   final String? errorMessage; // エラーメッセージ
 
   AuthState({
@@ -27,7 +27,7 @@ class AuthState {
 
   // 状態のコピーを作成するメソッド
   AuthState copyWith({
-    UserModel? user,
+    AppUser? user,
     String? errorMessage,
   }) {
     return AuthState(
@@ -50,13 +50,31 @@ class AuthNotifier extends StateNotifier<AuthState> {
   Future<void> signInWithEmailAndPassword(String email, String password) async {
     state = state.copyWith(errorMessage: null); // エラーリセット
     try {
-      final user = await _authService.signInWithEmailAndPassword(email, password);
+      final user =
+          await _authService.signInWithEmailAndPassword(email, password);
       state = state.copyWith(
-        user: UserModel(uid: user.uid, email: user.email),
+        user: AppUser(
+          userId: user.uid,
+          email: user.email ?? '',
+          displayName: '', // デフォルト値
+          profilePicture: '', // デフォルト値
+          skillLevel: '', // デフォルト値
+          region: '', // デフォルト値
+          playStyle: '', // デフォルト値
+          createdAt: DateTime.now(),
+          totalWins: 0,
+          totalLosses: 0,
+          winRate: 0.0,
+          recentMatches: [],
+          clans: [],
+          events: [],
+          posts: [],
+        ),
         errorMessage: null,
       );
     } catch (e) {
-      state = state.copyWith(errorMessage: "Failed to sign in: ${e.toString()}");
+      state =
+          state.copyWith(errorMessage: "Failed to sign in: ${e.toString()}");
     }
   }
 
@@ -64,13 +82,31 @@ class AuthNotifier extends StateNotifier<AuthState> {
   Future<void> signUpWithEmailAndPassword(String email, String password) async {
     state = state.copyWith(errorMessage: null); // エラーリセット
     try {
-      final user = await _authService.signUpWithEmailAndPassword(email, password);
+      final user =
+          await _authService.signUpWithEmailAndPassword(email, password);
       state = state.copyWith(
-        user: UserModel(uid: user.uid, email: user.email),
+        user: AppUser(
+          userId: user.uid,
+          email: user.email ?? '',
+          displayName: '', // デフォルト値
+          profilePicture: '', // デフォルト値
+          skillLevel: '', // デフォルト値
+          region: '', // デフォルト値
+          playStyle: '', // デフォルト値
+          createdAt: DateTime.now(),
+          totalWins: 0,
+          totalLosses: 0,
+          winRate: 0.0,
+          recentMatches: [],
+          clans: [],
+          events: [],
+          posts: [],
+        ),
         errorMessage: null,
       );
     } catch (e) {
-      state = state.copyWith(errorMessage: "Failed to sign up: ${e.toString()}");
+      state =
+          state.copyWith(errorMessage: "Failed to sign up: ${e.toString()}");
     }
   }
 

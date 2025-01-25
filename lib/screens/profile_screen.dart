@@ -1,54 +1,75 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pingpong_mix/viewmodels/user_vewmodel.dart';
 
-class ProfileScreen extends StatelessWidget {
+
+class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userState = ref.watch(userViewModelProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const CircleAvatar(
-              radius: 50,
-              backgroundImage: AssetImage(
-                  'assets/images/profile_placeholder.png'), // プロフィール画像のプレースホルダー
+      body: userState == null
+          ? const Center(
+              child: Text('No user data available'),
+            )
+          : Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundImage: userState.profilePicture.isNotEmpty
+                        ? NetworkImage(userState.profilePicture)
+                        : const AssetImage(
+                            'assets/images/profile_placeholder.png',
+                          ) as ImageProvider,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    userState.displayName.isNotEmpty
+                        ? userState.displayName
+                        : 'User Name',
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    userState.email.isNotEmpty
+                        ? userState.email
+                        : 'user@example.com',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.go('/home/profile/edit');
+                    },
+                    child: const Text('Edit Profile'),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      ref.read(userViewModelProvider.notifier).resetUser();
+                      context.go('/auth');
+                    },
+                    child: const Text('Logout'),
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 16),
-            const Text(
-              'User Name', // ユーザー名
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'user@example.com', // メールアドレス
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                // プロフィール編集画面に遷移
-                context.go('/home/profile/edit');
-              },
-              child: const Text('Edit Profile'),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                // ログアウト処理を実行
-                context.go('/auth');
-              },
-              child: const Text('Logout'),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
