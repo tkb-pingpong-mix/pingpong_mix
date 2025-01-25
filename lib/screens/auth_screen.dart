@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pingpong_mix/models/user_model.dart';
-import '../viewmodels/auth_viewmodel.dart';
+import 'package:pingpong_mix/viewmodels/auth_viewmodel.dart';
+import 'package:pingpong_mix/viewmodels/user_vewmodel.dart';
+import '../models/user_model.dart';
 import '../utils/custom_colors.dart';
 
 class AuthScreen extends ConsumerWidget {
@@ -13,8 +15,8 @@ class AuthScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authViewModel = ref.watch(authViewModelProvider.notifier);
     final authState = ref.watch(authViewModelProvider);
+    final userViewModel = ref.read(userViewModelProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -23,116 +25,132 @@ class AuthScreen extends ConsumerWidget {
         backgroundColor: CustomColors.appBarBackground,
       ),
       body: authState.when(
-        data: (user) => SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Text(
-                  'Welcome Back!',
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold,
-                    color: CustomColors.primary,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  'Sign in to continue',
-                  style: TextStyle(fontSize: 16.0, color: CustomColors.textSecondary),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 40),
-                TextField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    prefixIcon: Icon(Icons.email, color: CustomColors.primary),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
+        data: (user) {
+          if (user == null) {
+            // 未ログイン状態: ログインフォームを表示
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Text(
+                      'Welcome Back!',
+                      style: TextStyle(
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.primary,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    prefixIcon: Icon(Icons.lock, color: CustomColors.primary),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Sign in to continue',
+                      style: TextStyle(fontSize: 16.0, color: CustomColors.textSecondary),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                  obscureText: true,
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: CustomColors.primary,
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
+                    const SizedBox(height: 40),
+                    TextField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        prefixIcon: Icon(Icons.email, color: CustomColors.primary),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
                     ),
-                  ),
-                  onPressed: () async {
-                    await authViewModel.signInWithEmailAndPassword(
-                      _emailController.text.trim(),
-                      _passwordController.text.trim(),
-                    );
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        prefixIcon: Icon(Icons.lock, color: CustomColors.primary),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                      obscureText: true,
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: CustomColors.primary,
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                      onPressed: () async {
+                        await ref.read(authViewModelProvider.notifier).signInWithEmailAndPassword(
+                          _emailController.text.trim(),
+                          _passwordController.text.trim(),
+                        );
 
-                    ref.listen<AsyncValue<AppUser>>(authViewModelProvider, (previous, next) {
-                      next.when(
-                        data: (user) {
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            context.go('/home/matching');
-                          });
-                        },
-                        loading: () {},
-                        error: (error, stackTrace) {
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(error.toString()),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
-                          });
-                        },
-                      );
-                    });
-                  },
-                  child: const Text(
-                    'Sign In',
-                    style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    side: BorderSide(color: CustomColors.primary),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
+                        final userId = FirebaseAuth.instance.currentUser?.uid;
+                        if (userId != null) {
+                          await userViewModel.fetchUser(userId);
+                          context.go('/home/matching');
+                        }
+                      },
+                      child: const Text(
+                        'Sign In',
+                        style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                      ),
                     ),
-                  ),
-                  onPressed: () async {
-                    await authViewModel.signUpWithEmailAndPassword(
-                      _emailController.text.trim(),
-                      _passwordController.text.trim(),
-                    );
-                  },
-                  child: const Text(
-                    'Sign Up',
-                    style: TextStyle(fontSize: 16.0, color: CustomColors.primary, fontWeight: FontWeight.bold),
-                  ),
+                    const SizedBox(height: 16),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                        side: BorderSide(color: CustomColors.primary),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                      onPressed: () async {
+                        await ref.read(authViewModelProvider.notifier).signUpWithEmailAndPassword(
+                          _emailController.text.trim(),
+                          _passwordController.text.trim(),
+                        );
+
+                        final userId = FirebaseAuth.instance.currentUser?.uid;
+                        if (userId != null) {
+                          final newUser = AppUser(
+                            userId: userId,
+                            email: _emailController.text.trim(),
+                            displayName: '',
+                            profilePicture: '',
+                            skillLevel: '',
+                            region: '',
+                            playStyle: '',
+                            createdAt: DateTime.now(),
+                            totalWins: 0,
+                            totalLosses: 0,
+                            winRate: 0.0,
+                            recentMatches: [],
+                            clans: [],
+                            events: [],
+                            posts: [],
+                          );
+                          await userViewModel.createUser(newUser);
+                          context.go('/home/matching');
+                        }
+                      },
+                      child: const Text(
+                        'Sign Up',
+                        style: TextStyle(fontSize: 16.0, color: CustomColors.primary, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        ),
+              ),
+            );
+          } else {
+            // ログイン済み: 既に取得したユーザー情報に基づいて遷移
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) => Center(
           child: Text(
