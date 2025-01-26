@@ -10,9 +10,6 @@ class ProfileScreen extends ConsumerWidget {
     final userState = ref.watch(userViewModelProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile'),
-      ),
       body: userState.when(
         data: (user) {
           if (user == null) {
@@ -24,39 +21,96 @@ class ProfileScreen extends ConsumerWidget {
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(
-                  child: CircleAvatar(
-                    radius: 60,
-                    backgroundImage: user.profilePicture.isNotEmpty
-                        ? NetworkImage(user.profilePicture)
-                        : const AssetImage(
-                                'assets/images/profile_placeholder.png')
-                            as ImageProvider,
-                  ),
+                // Profile Picture
+                CircleAvatar(
+                  radius: 60,
+                  backgroundImage: user.profilePicture.isNotEmpty
+                      ? NetworkImage(user.profilePicture)
+                      : const AssetImage(
+                              'assets/images/profile_placeholder.png')
+                          as ImageProvider,
                 ),
                 const SizedBox(height: 16),
-                Center(
-                  child: Text(
-                    user.displayName.isNotEmpty
-                        ? user.displayName
-                        : 'User Name',
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                // Display Name
+                Text(
+                  user.displayName.isNotEmpty ? user.displayName : 'Guest User',
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 8),
-                Center(
-                  child: Text(
-                    user.email.isNotEmpty ? user.email : 'users@email.com',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
+                // Email
+                Text(
+                  user.email.isNotEmpty ? user.email : 'guest@example.com',
+                ),
+                const SizedBox(height: 16),
+                // Card with Profile Details
+                Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16.0),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ProfileDetailRow(
+                          icon: Icons.star,
+                          label: 'Skill Level',
+                          value: user.skillLevel.isNotEmpty
+                              ? user.skillLevel
+                              : 'Unknown',
+                        ),
+                        ProfileDetailRow(
+                          icon: Icons.location_on,
+                          label: 'Region',
+                          value: user.region.isNotEmpty
+                              ? user.region
+                              : 'Not Specified',
+                        ),
+                        ProfileDetailRow(
+                          icon: Icons.sports_tennis,
+                          label: 'Play Style',
+                          value: user.playStyle.isNotEmpty
+                              ? user.playStyle
+                              : 'Unspecified',
+                        ),
+                        ProfileDetailRow(
+                          icon: Icons.bar_chart,
+                          label: 'Win Rate',
+                          value:
+                              '${user.winRate > 0 ? user.winRate.toStringAsFixed(2) : '0.0'}%',
+                        ),
+                      ],
                     ),
                   ),
+                ),
+                const SizedBox(height: 16),
+                // Recent Matches
+                ProfileListSection(
+                  title: 'Recent Matches',
+                  items: user.recentMatches.isNotEmpty
+                      ? user.recentMatches
+                      : ['No matches played yet'],
+                ),
+                const SizedBox(height: 16),
+                // Clans
+                ProfileListSection(
+                  title: 'Clans',
+                  items: user.clans.isNotEmpty
+                      ? user.clans
+                      : ['Not part of any clans'],
+                ),
+                const SizedBox(height: 16),
+                // Events
+                ProfileListSection(
+                  title: 'Events',
+                  items: user.events.isNotEmpty
+                      ? user.events
+                      : ['No events joined'],
                 ),
               ],
             ),
@@ -68,6 +122,80 @@ class ProfileScreen extends ConsumerWidget {
             'Error: $error',
             style: const TextStyle(color: Colors.red),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class ProfileDetailRow extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+
+  const ProfileDetailRow({
+    required this.icon,
+    required this.label,
+    required this.value,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        children: [
+          Icon(icon),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Text(
+              '$label:',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          Text(value),
+        ],
+      ),
+    );
+  }
+}
+
+class ProfileListSection extends StatelessWidget {
+  final String title;
+  final List<String> items;
+
+  const ProfileListSection({
+    required this.title,
+    required this.items,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            ...items.map((item) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  child: Text('- $item'),
+                )),
+          ],
         ),
       ),
     );
