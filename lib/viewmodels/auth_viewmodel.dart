@@ -9,6 +9,18 @@ final authViewModelProvider =
   return AuthViewModel(ref.read(authServiceProvider));
 });
 
+// エラーメッセージプロバイダー
+final authErrorProvider = Provider<String?>((ref) {
+  final state = ref.watch(authViewModelProvider);
+  return state.when(
+    data: (_) => null,
+    loading: () => null,
+    error: (error, _) => error is FirebaseAuthException
+        ? error.message
+        : 'An unexpected error occurred',
+  );
+});
+
 // ViewModelクラス: 認証ロジックを管理する
 class AuthViewModel extends StateNotifier<AsyncValue<User?>> {
   final AuthService _authService;
@@ -35,7 +47,11 @@ class AuthViewModel extends StateNotifier<AsyncValue<User?>> {
           await _authService.signInWithEmailAndPassword(email, password);
       state = AsyncValue.data(user);
     } on FirebaseAuthException catch (e, stackTrace) {
-      errorMessage = e.message; // エラーを保存
+      errorMessage =
+          e.message ?? 'An unexpected error occurred'; // Firebase認証エラーを保存
+      state = AsyncValue.error(e, stackTrace);
+    } catch (e, stackTrace) {
+      errorMessage = 'An unexpected error occurred: $e'; // その他の例外を保存
       state = AsyncValue.error(e, stackTrace);
     }
   }
@@ -48,7 +64,11 @@ class AuthViewModel extends StateNotifier<AsyncValue<User?>> {
           await _authService.signUpWithEmailAndPassword(email, password);
       state = AsyncValue.data(user);
     } on FirebaseAuthException catch (e, stackTrace) {
-      errorMessage = e.message; // エラーを保存
+      errorMessage =
+          e.message ?? 'An unexpected error occurred'; // Firebase認証エラーを保存
+      state = AsyncValue.error(e, stackTrace);
+    } catch (e, stackTrace) {
+      errorMessage = 'An unexpected error occurred: $e'; // その他の例外を保存
       state = AsyncValue.error(e, stackTrace);
     }
   }
@@ -58,7 +78,12 @@ class AuthViewModel extends StateNotifier<AsyncValue<User?>> {
     try {
       await _authService.signOut();
       state = const AsyncValue.data(null);
+    } on FirebaseAuthException catch (e, stackTrace) {
+      errorMessage =
+          e.message ?? 'An unexpected error occurred'; // Firebase認証エラーを保存
+      state = AsyncValue.error(e, stackTrace);
     } catch (e, stackTrace) {
+      errorMessage = 'An unexpected error occurred: $e'; // その他の例外を保存
       state = AsyncValue.error(e, stackTrace);
     }
   }
