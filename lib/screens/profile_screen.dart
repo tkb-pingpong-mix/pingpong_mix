@@ -10,6 +10,10 @@ class ProfileScreen extends ConsumerWidget {
     final userState = ref.watch(userViewModelProvider);
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Profile'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+      ),
       body: userState.when(
         data: (user) {
           if (user == null) {
@@ -35,11 +39,13 @@ class ProfileScreen extends ConsumerWidget {
                 // Display Name
                 Text(
                   user.displayName.isNotEmpty ? user.displayName : 'Guest User',
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 8),
                 // Email
                 Text(
                   user.email.isNotEmpty ? user.email : 'guest@example.com',
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 const SizedBox(height: 16),
                 // Card with Profile Details
@@ -116,7 +122,7 @@ class ProfileScreen extends ConsumerWidget {
         error: (error, stackTrace) => Center(
           child: Text(
             'Error: $error',
-            style: const TextStyle(color: Colors.red),
+            style: TextStyle(color: Theme.of(context).colorScheme.error),
           ),
         ),
       ),
@@ -142,15 +148,17 @@ class ProfileDetailRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
-          Icon(icon),
+          Icon(icon, color: Theme.of(context).colorScheme.primary),
           const SizedBox(width: 16),
           Expanded(
             child: Text(
               '$label:',
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
           ),
-          Text(value),
+          Text(value, style: Theme.of(context).textTheme.bodyMedium),
         ],
       ),
     );
@@ -181,11 +189,15 @@ class ProfileListSection extends StatelessWidget {
           children: [
             Text(
               title,
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 8),
             ...items.map((item) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4.0),
-                  child: Text('- $item'),
+                  child: Text(
+                    '- $item',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
                 )),
           ],
         ),
