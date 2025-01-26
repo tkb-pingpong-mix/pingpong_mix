@@ -17,28 +17,36 @@ class UserViewModel extends StateNotifier<AsyncValue<AppUser?>> {
 
   Future<void> fetchUser(String userId) async {
     try {
-      final doc = await _firestore.collection('users').doc(userId).get();
+      if (userId.isEmpty) {
+        throw Exception("User ID is empty.");
+      }
+
+      final doc = await _firestore.collection('Users').doc(userId).get();
       if (doc.exists) {
         state = AsyncValue.data(AppUser.fromFirestore(doc));
       } else {
-        Logger().w('User not found in Firestore');
         state = const AsyncValue.data(null);
+        Logger().w('User not found in Firestore');
       }
     } catch (e, stackTrace) {
-      Logger().e('Error feÏtching user: \$e');
+      Logger().e('Error fetching user: $e, $stackTrace');
       state = AsyncValue.error(e, stackTrace);
     }
   }
 
   Future<void> createUser(AppUser appUser) async {
     try {
+      if (appUser.userId.isEmpty) {
+        throw Exception("User ID is empty.");
+      }
+
       await _firestore
-          .collection('users')
+          .collection('Users')
           .doc(appUser.userId)
           .set(appUser.toFirestore());
       state = AsyncValue.data(appUser);
     } catch (e, stackTrace) {
-      Logger().e('Create User Failed: \$e');
+      Logger().e('Create User Failed: $e , $stackTrace');
       state = AsyncValue.error(e, stackTrace);
     }
   }

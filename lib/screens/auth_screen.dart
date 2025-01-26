@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingpong_mix/viewmodels/auth_viewmodel.dart';
-import 'package:pingpong_mix/viewmodels/user_vewmodel.dart';
+import 'package:pingpong_mix/viewmodels/user_viewmodel.dart';
 import '../models/user_model.dart';
 import '../utils/custom_colors.dart';
 
@@ -17,6 +17,7 @@ class AuthScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authViewModelProvider);
     final userViewModel = ref.read(userViewModelProvider.notifier);
+    final authViewModel = ref.read(authViewModelProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -30,7 +31,8 @@ class AuthScreen extends ConsumerWidget {
             // 未ログイン状態: ログインフォームを表示
             return SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 24.0, vertical: 16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -46,15 +48,25 @@ class AuthScreen extends ConsumerWidget {
                     const SizedBox(height: 10),
                     const Text(
                       'Sign in to continue',
-                      style: TextStyle(fontSize: 16.0, color: CustomColors.textSecondary),
+                      style: TextStyle(
+                          fontSize: 16.0, color: CustomColors.textSecondary),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 40),
+                    if (authViewModel.errorMessage != null)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16.0),
+                        child: Text(
+                          authViewModel.errorMessage!,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                      ),
                     TextField(
                       controller: _emailController,
                       decoration: InputDecoration(
                         labelText: 'Email',
-                        prefixIcon: Icon(Icons.email, color: CustomColors.primary),
+                        prefixIcon:
+                            Icon(Icons.email, color: CustomColors.primary),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),
@@ -66,7 +78,8 @@ class AuthScreen extends ConsumerWidget {
                       controller: _passwordController,
                       decoration: InputDecoration(
                         labelText: 'Password',
-                        prefixIcon: Icon(Icons.lock, color: CustomColors.primary),
+                        prefixIcon:
+                            Icon(Icons.lock, color: CustomColors.primary),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),
@@ -83,12 +96,13 @@ class AuthScreen extends ConsumerWidget {
                         ),
                       ),
                       onPressed: () async {
-                        await ref.read(authViewModelProvider.notifier).signInWithEmailAndPassword(
+                        await authViewModel.signInWithEmailAndPassword(
                           _emailController.text.trim(),
                           _passwordController.text.trim(),
                         );
 
                         final userId = FirebaseAuth.instance.currentUser?.uid;
+                        print(userId);
                         if (userId != null) {
                           await userViewModel.fetchUser(userId);
                           context.go('/home/matching');
@@ -96,7 +110,8 @@ class AuthScreen extends ConsumerWidget {
                       },
                       child: const Text(
                         'Sign In',
-                        style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.bold),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -109,10 +124,12 @@ class AuthScreen extends ConsumerWidget {
                         ),
                       ),
                       onPressed: () async {
-                        await ref.read(authViewModelProvider.notifier).signUpWithEmailAndPassword(
-                          _emailController.text.trim(),
-                          _passwordController.text.trim(),
-                        );
+                        await ref
+                            .read(authViewModelProvider.notifier)
+                            .signUpWithEmailAndPassword(
+                              _emailController.text.trim(),
+                              _passwordController.text.trim(),
+                            );
 
                         final userId = FirebaseAuth.instance.currentUser?.uid;
                         if (userId != null) {
@@ -139,7 +156,10 @@ class AuthScreen extends ConsumerWidget {
                       },
                       child: const Text(
                         'Sign Up',
-                        style: TextStyle(fontSize: 16.0, color: CustomColors.primary, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 16.0,
+                            color: CustomColors.primary,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],

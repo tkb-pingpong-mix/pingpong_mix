@@ -12,6 +12,7 @@ final authViewModelProvider =
 // ViewModelクラス: 認証ロジックを管理する
 class AuthViewModel extends StateNotifier<AsyncValue<User?>> {
   final AuthService _authService;
+  String? errorMessage;
 
   AuthViewModel(this._authService) : super(const AsyncValue.loading()) {
     _initialize();
@@ -28,22 +29,26 @@ class AuthViewModel extends StateNotifier<AsyncValue<User?>> {
 
   Future<void> signInWithEmailAndPassword(String email, String password) async {
     state = const AsyncValue.loading();
+    errorMessage = null; // エラーリセット
     try {
       final user =
           await _authService.signInWithEmailAndPassword(email, password);
       state = AsyncValue.data(user);
-    } catch (e, stackTrace) {
+    } on FirebaseAuthException catch (e, stackTrace) {
+      errorMessage = e.message; // エラーを保存
       state = AsyncValue.error(e, stackTrace);
     }
   }
 
   Future<void> signUpWithEmailAndPassword(String email, String password) async {
     state = const AsyncValue.loading();
+    errorMessage = null;
     try {
       final user =
           await _authService.signUpWithEmailAndPassword(email, password);
       state = AsyncValue.data(user);
-    } catch (e, stackTrace) {
+    } on FirebaseAuthException catch (e, stackTrace) {
+      errorMessage = e.message; // エラーを保存
       state = AsyncValue.error(e, stackTrace);
     }
   }
