@@ -35,7 +35,6 @@ class PostListScreen extends StatelessWidget {
                 : post.content),
             trailing: Text(
               "${post.timestamp.month}/${post.timestamp.day}/${post.timestamp.year}",
-              style: TextStyle(color: Colors.grey, fontSize: 12),
             ),
             onTap: () {
               context.go('/home/posts/detail', extra: post);

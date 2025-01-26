@@ -35,10 +35,6 @@ class ProfileScreen extends ConsumerWidget {
                 // Display Name
                 Text(
                   user.displayName.isNotEmpty ? user.displayName : 'Guest User',
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
                 ),
                 const SizedBox(height: 8),
                 // Email
@@ -185,10 +181,6 @@ class ProfileListSection extends StatelessWidget {
           children: [
             Text(
               title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
             ),
             const SizedBox(height: 8),
             ...items.map((item) => Padding(

@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:pingpong_mix/viewmodels/auth_viewmodel.dart';
 import 'package:pingpong_mix/viewmodels/user_viewmodel.dart';
 import '../models/user_model.dart';
-import '../utils/custom_colors.dart';
 
 class AuthScreen extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -18,8 +17,6 @@ class AuthScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Email Authentication'),
-        centerTitle: true,
-        backgroundColor: CustomColors.appBarBackground,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -29,18 +26,11 @@ class AuthScreen extends StatelessWidget {
             children: [
               const Text(
                 'Welcome Back!',
-                style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                  color: CustomColors.primary,
-                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 10),
               const Text(
                 'Sign in to continue',
-                style: TextStyle(
-                    fontSize: 16.0, color: CustomColors.textSecondary),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 40),
@@ -54,7 +44,6 @@ class AuthScreen extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 16.0),
                     child: Text(
                       errorMessage,
-                      style: const TextStyle(color: Colors.red),
                     ),
                   );
                 },
@@ -63,7 +52,7 @@ class AuthScreen extends StatelessWidget {
                 controller: _emailController,
                 decoration: InputDecoration(
                   labelText: 'Email',
-                  prefixIcon: Icon(Icons.email, color: CustomColors.primary),
+                  prefixIcon: Icon(Icons.email),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
@@ -75,7 +64,7 @@ class AuthScreen extends StatelessWidget {
                 controller: _passwordController,
                 decoration: InputDecoration(
                   labelText: 'Password',
-                  prefixIcon: Icon(Icons.lock, color: CustomColors.primary),
+                  prefixIcon: Icon(Icons.lock),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
@@ -92,11 +81,7 @@ class AuthScreen extends StatelessWidget {
 
                   return ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: CustomColors.primary,
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
                     ),
                     onPressed: () async {
                       try {
@@ -117,8 +102,6 @@ class AuthScreen extends StatelessWidget {
                     },
                     child: const Text(
                       'Sign In',
-                      style: TextStyle(
-                          fontSize: 16.0, fontWeight: FontWeight.bold),
                     ),
                   );
                 },
@@ -134,7 +117,7 @@ class AuthScreen extends StatelessWidget {
                   return OutlinedButton(
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      side: BorderSide(color: CustomColors.primary),
+                      side: BorderSide(),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
@@ -170,11 +153,7 @@ class AuthScreen extends StatelessWidget {
                       }
                     },
                     child: const Text(
-                      'Sign Up',
-                      style: TextStyle(
-                          fontSize: 16.0,
-                          color: CustomColors.primary,
-                          fontWeight: FontWeight.bold),
+                      'Sign Up'
                     ),
                   );
                 },

@@ -34,7 +34,6 @@ class ChatListScreen extends StatelessWidget {
             subtitle: Text(chat.lastMessage),
             trailing: Text(
               "${chat.timestamp.hour}:${chat.timestamp.minute}",
-              style: TextStyle(color: Colors.grey, fontSize: 12),
             ),
             onTap: () {
               // 修正: chat.id を使用

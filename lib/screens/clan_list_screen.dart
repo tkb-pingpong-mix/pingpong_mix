@@ -18,10 +18,8 @@ class ClanListScreen extends StatelessWidget {
               'Welcome to the Clan Screen',
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-            const SizedBox(height: 20),
             const Text(
               'Here you can manage clan details and members.',
-              style: TextStyle(fontSize: 16),
             ),
             ElevatedButton(
               onPressed: () {
