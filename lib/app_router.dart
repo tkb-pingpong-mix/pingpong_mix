@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingpong_mix/models/post_model.dart';
 import 'package:pingpong_mix/screens/chat_details_screen.dart';
 import 'package:pingpong_mix/screens/chat_list_screen.dart';
 import 'package:pingpong_mix/screens/map_screen.dart';
 import 'package:pingpong_mix/screens/post_details_screen.dart';
+import 'package:pingpong_mix/viewmodels/user_viewmodel.dart';
 import 'screens/splash_screen.dart';
 import 'screens/auth_screen.dart';
 import 'screens/home_screen.dart';
@@ -85,7 +87,18 @@ class AppRouter {
           ),
           GoRoute(
             path: '/home/profile',
-            builder: (context, state) => const ProfileScreen(),
+            builder: (context, state) {
+              final container = ProviderScope.containerOf(context);
+              final userViewModel =
+                  container.read(userViewModelProvider.notifier);
+
+              final userId = FirebaseAuth.instance.currentUser?.uid;
+              if (userId != null) {
+                userViewModel.fetchUser(userId); // fetchUserを呼び出す
+              }
+
+              return const ProfileScreen(); // ProfileScreenを返す
+            },
             routes: [
               GoRoute(
                 path: 'edit',
@@ -106,24 +119,23 @@ class AppRouter {
                 builder: (context, state) => const ClanEditScreen(),
               ),
             ],
-            
           ),
         ],
       ),
     ],
     redirect: (context, state) {
-            final isLoggedIn = FirebaseAuth.instance.currentUser != null;
-            final isAuthRoute = state.uri.toString() == '/auth';
+      final isLoggedIn = FirebaseAuth.instance.currentUser != null;
+      final isAuthRoute = state.uri.toString() == '/auth';
 
-            if (!isLoggedIn && !isAuthRoute) {
-              return '/auth'; // 未ログインなら/authへリダイレクト
-            }
+      if (!isLoggedIn && !isAuthRoute) {
+        return '/auth'; // 未ログインなら/authへリダイレクト
+      }
 
-            if (isLoggedIn && isAuthRoute) {
-              return '/home/matching'; // ログイン済みなら/home/matchingへリダイレクト
-            }
+      if (isLoggedIn && isAuthRoute) {
+        return '/home/matching'; // ログイン済みなら/home/matchingへリダイレクト
+      }
 
-            return null;
-          },
+      return null;
+    },
   );
 }
