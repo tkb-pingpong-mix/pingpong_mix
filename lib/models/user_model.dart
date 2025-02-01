@@ -20,6 +20,10 @@ class AppUser {
   final int? following; // Optional
   final List<String>? followersList; // Optional
   final List<String>? followingList; // Optional
+  final String? racket; // Optional
+  final String? forehandRubber; // Optional
+  final String? backhandRubber; // Optional
+  final String? shoes; // Optional
 
   AppUser({
     required this.userId,
@@ -37,10 +41,14 @@ class AppUser {
     required this.clans,
     required this.events,
     required this.posts,
-    this.followers, // Optional
-    this.following, // Optional
-    this.followersList, // Optional
-    this.followingList, // Optional
+    this.followers,
+    this.following,
+    this.followersList,
+    this.followingList,
+    this.racket,
+    this.forehandRubber,
+    this.backhandRubber,
+    this.shoes,
   });
 
   factory AppUser.fromFirestore(DocumentSnapshot doc) {
@@ -62,14 +70,18 @@ class AppUser {
       clans: List<String>.from(data['clans'] ?? []),
       events: List<String>.from(data['events'] ?? []),
       posts: List<String>.from(data['posts'] ?? []),
-      followers: data['followers'], // Optional
-      following: data['following'], // Optional
+      followers: data['followers'],
+      following: data['following'],
       followersList: data['followersList'] != null
           ? List<String>.from(data['followersList'])
-          : null, // Optional
+          : null,
       followingList: data['followingList'] != null
           ? List<String>.from(data['followingList'])
-          : null, // Optional
+          : null,
+      racket: data['racket'],
+      forehandRubber: data['forehandRubber'],
+      backhandRubber: data['backhandRubber'],
+      shoes: data['shoes'],
     );
   }
 
@@ -90,10 +102,14 @@ class AppUser {
       'clans': clans,
       'events': events,
       'posts': posts,
-      if (followers != null) 'followers': followers, // Optional
-      if (following != null) 'following': following, // Optional
-      if (followersList != null) 'followersList': followersList, // Optional
-      if (followingList != null) 'followingList': followingList, // Optional
+      if (followers != null) 'followers': followers,
+      if (following != null) 'following': following,
+      if (followersList != null) 'followersList': followersList,
+      if (followingList != null) 'followingList': followingList,
+      if (racket != null) 'racket': racket,
+      if (forehandRubber != null) 'forehandRubber': forehandRubber,
+      if (backhandRubber != null) 'backhandRubber': backhandRubber,
+      if (shoes != null) 'shoes': shoes,
     };
   }
 }

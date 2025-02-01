@@ -2,25 +2,43 @@
 
 ## コレクションとフィールドの定義
 
+# Firestore データベース構造定義書
+
+## コレクションとフィールドの定義
+
 ### 1. Users コレクション
-- **概要**: ユーザーのプロファイルと設定を保存します。
+- **概要**: ユーザーのプロファイル、設定、フォロワー情報、用具情報を保存します。
 - **ドキュメントID**: `userId` (Firebase Auth の UID)
 - **フィールド**:
-  - `userId`: ユーザーID（ドキュメントIDと同じ）
-  - `email`: メールアドレス
-  - `displayName`: 表示名
-  - `profilePicture`: プロフィール画像URL
-  - `skillLevel`: スキルレベル（例: Beginner, Intermediate, Advanced）
-  - `region`: 活動地域
-  - `playStyle`: プレイスタイル（例: Aggressive, Defensive, Balanced）
-  - `createdAt`: アカウント作成日時
-  - `totalWins`: 勝利数
-  - `totalLosses`: 敗北数
-  - `winRate`: 勝率
-  - `recentMatches`: 最近の試合のリスト（`Matches` コレクションの参照）
-  - `clans`: 参加しているクランのリスト（`Clans` コレクションの参照）
-  - `events`: 参加しているイベントのリスト（`Events` コレクションの参照）
-  - `posts`: 作成した投稿のリスト（`Posts` コレクションの参照）
+  - **基本情報**:
+    - `userId`: ユーザーID（ドキュメントIDと同じ）
+    - `email`: メールアドレス
+    - `displayName`: 表示名
+    - `profilePicture`: プロフィール画像URL
+    - `skillLevel`: スキルレベル（例: Beginner, Intermediate, Advanced）
+    - `region`: 活動地域
+    - `playStyle`: プレイスタイル（例: Aggressive, Defensive, Balanced）
+    - `createdAt`: アカウント作成日時
+  - **成績情報**:
+    - `totalWins`: 勝利数
+    - `totalLosses`: 敗北数
+    - `winRate`: 勝率
+  - **フォロワー関連**:
+    - `followers`: フォロワー数
+    - `following`: フォロー数
+    - `followersList`: フォロワーIDのリスト
+    - `followingList`: フォロー中ユーザーのIDリスト
+  - **用具情報**:
+    - `racket`: ラケット名
+    - `forehandRubber`: フォアラバー名
+    - `backhandRubber`: バックラバー名
+    - `shoes`: シューズ名
+  - **その他の関連データ**:
+    - `recentMatches`: 最近の試合のリスト（`Matches` コレクションの参照）
+    - `clans`: 参加しているクランのリスト（`Clans` コレクションの参照）
+    - `events`: 参加しているイベントのリスト（`Events` コレクションの参照）
+    - `posts`: 作成した投稿のリスト（`Posts` コレクションの参照）
+
 
 ### 2. Matches コレクション
 - **概要**: ユーザー間の試合の記録と戦績を管理します。

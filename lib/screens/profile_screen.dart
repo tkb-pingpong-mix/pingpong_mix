@@ -143,6 +143,34 @@ class ProfileScreen extends ConsumerWidget {
                               : 'Unspecified',
                         ),
                         ProfileDetailRow(
+                          icon: Icons.sports_tennis,
+                          label: 'Racket',
+                          value: user.racket?.isNotEmpty == true
+                              ? user.racket!
+                              : 'Unspecified',
+                        ),
+                        ProfileDetailRow(
+                          icon: Icons.sports_tennis,
+                          label: 'Forehand Rubber',
+                          value: user.forehandRubber?.isNotEmpty == true
+                              ? user.forehandRubber!
+                              : 'Unspecified',
+                        ),
+                        ProfileDetailRow(
+                          icon: Icons.sports_tennis,
+                          label: 'Backhand Rubber',
+                          value: user.backhandRubber?.isNotEmpty == true
+                              ? user.backhandRubber!
+                              : 'Unspecified',
+                        ),
+                        ProfileDetailRow(
+                          icon: Icons.directions_run,
+                          label: 'Shoes',
+                          value: user.shoes?.isNotEmpty == true
+                              ? user.shoes!
+                              : 'Unspecified',
+                        ),
+                        ProfileDetailRow(
                           icon: Icons.bar_chart,
                           label: 'Win Rate',
                           value:
@@ -245,7 +273,7 @@ class ProfileListSection extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
               title,
