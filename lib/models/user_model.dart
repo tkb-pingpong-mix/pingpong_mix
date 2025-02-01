@@ -16,14 +16,14 @@ class AppUser {
   final List<String> clans;
   final List<String> events;
   final List<String> posts;
-  final int? followers; // Optional
-  final int? following; // Optional
-  final List<String>? followersList; // Optional
-  final List<String>? followingList; // Optional
-  final String? racket; // Optional
-  final String? forehandRubber; // Optional
-  final String? backhandRubber; // Optional
-  final String? shoes; // Optional
+  final int? followers;
+  final int? following;
+  final List<String>? followersList;
+  final List<String>? followingList;
+  final String? racket;
+  final String? forehandRubber;
+  final String? backhandRubber;
+  final String? shoes;
 
   AppUser({
     required this.userId,
@@ -111,5 +111,54 @@ class AppUser {
       if (backhandRubber != null) 'backhandRubber': backhandRubber,
       if (shoes != null) 'shoes': shoes,
     };
+  }
+
+  AppUser copyWith({
+    String? displayName,
+    String? profilePicture,
+    String? skillLevel,
+    String? region,
+    String? playStyle,
+    int? totalWins,
+    int? totalLosses,
+    double? winRate,
+    List<String>? recentMatches,
+    List<String>? clans,
+    List<String>? events,
+    List<String>? posts,
+    int? followers,
+    int? following,
+    List<String>? followersList,
+    List<String>? followingList,
+    String? racket,
+    String? forehandRubber,
+    String? backhandRubber,
+    String? shoes,
+  }) {
+    return AppUser(
+      userId: userId,
+      email: email,
+      displayName: displayName ?? this.displayName,
+      profilePicture: profilePicture ?? this.profilePicture,
+      skillLevel: skillLevel ?? this.skillLevel,
+      region: region ?? this.region,
+      playStyle: playStyle ?? this.playStyle,
+      createdAt: createdAt,
+      totalWins: totalWins ?? this.totalWins,
+      totalLosses: totalLosses ?? this.totalLosses,
+      winRate: winRate ?? this.winRate,
+      recentMatches: recentMatches ?? this.recentMatches,
+      clans: clans ?? this.clans,
+      events: events ?? this.events,
+      posts: posts ?? this.posts,
+      followers: followers ?? this.followers,
+      following: following ?? this.following,
+      followersList: followersList ?? this.followersList,
+      followingList: followingList ?? this.followingList,
+      racket: racket ?? this.racket,
+      forehandRubber: forehandRubber ?? this.forehandRubber,
+      backhandRubber: backhandRubber ?? this.backhandRubber,
+      shoes: shoes ?? this.shoes,
+    );
   }
 }

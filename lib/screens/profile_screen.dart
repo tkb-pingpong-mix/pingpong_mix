@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pingpong_mix/viewmodels/user_viewmodel.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -175,6 +176,12 @@ class ProfileScreen extends ConsumerWidget {
                           label: 'Win Rate',
                           value:
                               '${user.winRate > 0 ? user.winRate.toStringAsFixed(2) : '0.0'}%',
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            context.go('/home/profile/edit');
+                          },
+                          child: const Text('Edit Profile'),
                         ),
                       ],
                     ),

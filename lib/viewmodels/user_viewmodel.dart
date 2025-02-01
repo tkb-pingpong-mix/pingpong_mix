@@ -50,6 +50,21 @@ class UserViewModel extends StateNotifier<AsyncValue<AppUser?>> {
       state = AsyncValue.error(e, stackTrace);
     }
   }
+  
+
+  Future<void> updateUser(AppUser updatedUser) async {
+    try {
+      await _firestore
+          .collection('Users')
+          .doc(updatedUser.userId)
+          .update(updatedUser.toFirestore());
+      state = AsyncValue.data(updatedUser);
+      Logger().i('User profile updated successfully');
+    } catch (e, stackTrace) {
+      Logger().e('Update User Failed: $e, $stackTrace');
+      state = AsyncValue.error(e, stackTrace);
+    }
+  }
 
   // 状態をリセット
   Future<void> resetUser() async {
