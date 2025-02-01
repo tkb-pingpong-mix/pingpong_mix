@@ -1,4 +1,3 @@
-// User Model
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AppUser {
@@ -17,6 +16,10 @@ class AppUser {
   final List<String> clans;
   final List<String> events;
   final List<String> posts;
+  final int? followers; // Optional
+  final int? following; // Optional
+  final List<String>? followersList; // Optional
+  final List<String>? followingList; // Optional
 
   AppUser({
     required this.userId,
@@ -34,6 +37,10 @@ class AppUser {
     required this.clans,
     required this.events,
     required this.posts,
+    this.followers, // Optional
+    this.following, // Optional
+    this.followersList, // Optional
+    this.followingList, // Optional
   });
 
   factory AppUser.fromFirestore(DocumentSnapshot doc) {
@@ -55,6 +62,14 @@ class AppUser {
       clans: List<String>.from(data['clans'] ?? []),
       events: List<String>.from(data['events'] ?? []),
       posts: List<String>.from(data['posts'] ?? []),
+      followers: data['followers'], // Optional
+      following: data['following'], // Optional
+      followersList: data['followersList'] != null
+          ? List<String>.from(data['followersList'])
+          : null, // Optional
+      followingList: data['followingList'] != null
+          ? List<String>.from(data['followingList'])
+          : null, // Optional
     );
   }
 
@@ -75,6 +90,10 @@ class AppUser {
       'clans': clans,
       'events': events,
       'posts': posts,
+      if (followers != null) 'followers': followers, // Optional
+      if (following != null) 'following': following, // Optional
+      if (followersList != null) 'followersList': followersList, // Optional
+      if (followingList != null) 'followingList': followingList, // Optional
     };
   }
 }

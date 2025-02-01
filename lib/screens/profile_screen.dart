@@ -25,30 +25,93 @@ class ProfileScreen extends ConsumerWidget {
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Profile Picture
-                CircleAvatar(
-                  radius: 60,
-                  backgroundImage: user.profilePicture.isNotEmpty
-                      ? NetworkImage(user.profilePicture)
-                      : const AssetImage(
-                              'assets/images/profile_placeholder.png')
-                          as ImageProvider,
+                Column(
+                  children: [
+                    // プロフィール画像
+                    CircleAvatar(
+                      radius: 60,
+                      backgroundImage: user.profilePicture.isNotEmpty
+                          ? NetworkImage(user.profilePicture)
+                          : const AssetImage(
+                                  'assets/images/profile_placeholder.png')
+                              as ImageProvider,
+                    ),
+                    const SizedBox(height: 16),
+
+                    // 表示名
+                    Text(
+                      user.displayName.isNotEmpty
+                          ? user.displayName
+                          : 'Guest User',
+                      style:
+                          Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                    ),
+                    const SizedBox(height: 8),
+
+                    // メールアドレス
+                    Text(
+                      user.email.isNotEmpty ? user.email : 'guest@example.com',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withOpacity(0.6),
+                          ),
+                    ),
+                    const SizedBox(height: 24),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              '${user.followers ?? 0}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Followers',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text(
+                              '${user.following ?? 0}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Following',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
+
+                // 区切り線
+                Divider(color: Theme.of(context).colorScheme.outlineVariant),
                 const SizedBox(height: 16),
-                // Display Name
-                Text(
-                  user.displayName.isNotEmpty ? user.displayName : 'Guest User',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-                const SizedBox(height: 8),
-                // Email
-                Text(
-                  user.email.isNotEmpty ? user.email : 'guest@example.com',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                const SizedBox(height: 16),
-                // Card with Profile Details
+
+                // プロフィール詳細カード
                 Card(
                   elevation: 4,
                   shape: RoundedRectangleBorder(
@@ -57,7 +120,6 @@ class ProfileScreen extends ConsumerWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ProfileDetailRow(
                           icon: Icons.star,
@@ -90,24 +152,21 @@ class ProfileScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
-                // Recent Matches
+                const SizedBox(height: 24),
+
+                // リストセクション
                 ProfileListSection(
                   title: 'Recent Matches',
                   items: user.recentMatches.isNotEmpty
                       ? user.recentMatches
                       : ['No matches played yet'],
                 ),
-                const SizedBox(height: 16),
-                // Clans
                 ProfileListSection(
                   title: 'Clans',
                   items: user.clans.isNotEmpty
                       ? user.clans
                       : ['Not part of any clans'],
                 ),
-                const SizedBox(height: 16),
-                // Events
                 ProfileListSection(
                   title: 'Events',
                   items: user.events.isNotEmpty
@@ -178,7 +237,8 @@ class ProfileListSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 4,
+      elevation: 3,
+      margin: const EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
       ),
@@ -189,7 +249,9 @@ class ProfileListSection extends StatelessWidget {
           children: [
             Text(
               title,
-              style: Theme.of(context).textTheme.headlineSmall,
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
             const SizedBox(height: 8),
             ...items.map((item) => Padding(
