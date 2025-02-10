@@ -1,46 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:pingpong_mix/models/post_model.dart';
-import 'package:pingpong_mix/screens/post_details_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../models/post_model.dart';
+import 'post_details_screen.dart';
 
-class PostListScreen extends StatelessWidget {
-  final List<PostModel> posts = [
-    PostModel(
-        id: '1',
-        title: 'Table Tennis Tips',
-        content: 'Learn some great tips for improving your game...',
-        timestamp: DateTime.now().subtract(Duration(days: 1))),
-    PostModel(
-        id: '2',
-        title: 'Upcoming Tournaments',
-        content: 'Check out these upcoming tournaments in your area...',
-        timestamp: DateTime.now().subtract(Duration(days: 2))),
-    // Add more sample posts
-  ];
+final postsProvider = StreamProvider.autoDispose<List<PostModel>>((ref) {
+  return FirebaseFirestore.instance.collection('Posts').snapshots().map(
+        (snapshot) =>
+            snapshot.docs.map((doc) => PostModel.fromFirestore(doc)).toList(),
+      );
+});
 
+class PostListScreen extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final postsAsync = ref.watch(postsProvider);
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Posts'),
-      ),
-      body: ListView.builder(
-        itemCount: posts.length,
-        itemBuilder: (context, index) {
-          final post = posts[index];
-          return ListTile(
-            title: Text(post.title),
-            subtitle: Text(post.content.length > 50
-                ? post.content.substring(0, 50) + '...'
-                : post.content),
-            trailing: Text(
-              "${post.timestamp.month}/${post.timestamp.day}/${post.timestamp.year}",
-            ),
-            onTap: () {
-              context.go('/home/posts/detail', extra: post);
-            },
-          );
-        },
+      appBar: AppBar(title: Text('投稿一覧')),
+      body: postsAsync.when(
+        data: (posts) => ListView.builder(
+          itemCount: posts.length,
+          itemBuilder: (context, index) {
+            final post = posts[index];
+            return Card(
+              child: ListTile(
+                leading: post.imageURLs.isNotEmpty
+                    ? Image.network(post.imageURLs.first,
+                        width: 50, height: 50, fit: BoxFit.cover)
+                    : Icon(Icons.text_snippet),
+                title: Text(post.content),
+                subtitle: Text(post.postedAt.toLocal().toString()),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PostDetailsScreen(post: post)),
+                ),
+              ),
+            );
+          },
+        ),
+        loading: () => Center(child: CircularProgressIndicator()),
+        error: (error, _) => Center(child: Text('エラー: $error')),
       ),
     );
   }
