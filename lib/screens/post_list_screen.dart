@@ -21,12 +21,8 @@ class PostListScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          '投稿一覧',
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-        ),
+        title: const Text('投稿一覧'),
         centerTitle: true,
-        backgroundColor: Colors.teal,
         elevation: 5,
       ),
       body: postsAsync.when(
@@ -56,6 +52,10 @@ class PostListScreen extends ConsumerWidget {
             style: const TextStyle(color: Colors.red),
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.go('/home/posts/create'),
+        child: const Icon(Icons.add),
       ),
     );
   }

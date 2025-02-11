@@ -5,6 +5,7 @@ import 'package:pingpong_mix/models/post_model.dart';
 import 'package:pingpong_mix/screens/chat_details_screen.dart';
 import 'package:pingpong_mix/screens/chat_list_screen.dart';
 import 'package:pingpong_mix/screens/map_screen.dart';
+import 'package:pingpong_mix/screens/post_create_screen.dart';
 import 'package:pingpong_mix/screens/post_details_screen.dart';
 import 'package:pingpong_mix/viewmodels/user_viewmodel.dart';
 import 'screens/splash_screen.dart';
@@ -68,6 +69,10 @@ class AppRouter {
                   }
                   return PostDetailsScreen();
                 },
+              ),
+              GoRoute(
+                path: 'create',
+                builder: (context, state) => PostCreateScreen(),
               ),
             ],
           ),
