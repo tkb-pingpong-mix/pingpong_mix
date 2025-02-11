@@ -61,11 +61,17 @@ class AppRouter {
             routes: [
               GoRoute(
                 path: 'detail',
-                builder: (context, state) =>
-                    PostDetailsScreen(post: state.extra as PostModel),
+                builder: (context, state) {
+                  final post = state.extra as PostModel?;
+                  if (post == null) {
+                    throw Exception('PostModel が null です');
+                  }
+                  return PostDetailsScreen();
+                },
               ),
             ],
           ),
+
           // チャットリスト画面
           GoRoute(
             path: '/home/chats',
@@ -125,14 +131,14 @@ class AppRouter {
     ],
     redirect: (context, state) {
       final isLoggedIn = FirebaseAuth.instance.currentUser != null;
-      final isAuthRoute = state.uri.toString() == '/auth';
+      final isAuthRoute = state.matchedLocation == '/auth';
 
       if (!isLoggedIn && !isAuthRoute) {
-        return '/auth'; // 未ログインなら/authへリダイレクト
+        return '/auth';
       }
 
       if (isLoggedIn && isAuthRoute) {
-        return '/home/matching'; // ログイン済みなら/home/matchingへリダイレクト
+        return '/home/matching';
       }
 
       return null;

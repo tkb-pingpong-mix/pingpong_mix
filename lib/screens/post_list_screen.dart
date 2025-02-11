@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:go_router/go_router.dart';
+import 'package:pingpong_mix/screens/post_card.dart';
 import '../models/post_model.dart';
-import 'post_details_screen.dart';
 
 final postsProvider = StreamProvider.autoDispose<List<PostModel>>((ref) {
   return FirebaseFirestore.instance.collection('Posts').snapshots().map(
@@ -12,36 +13,49 @@ final postsProvider = StreamProvider.autoDispose<List<PostModel>>((ref) {
 });
 
 class PostListScreen extends ConsumerWidget {
+  const PostListScreen({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final postsAsync = ref.watch(postsProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text('投稿一覧')),
+      appBar: AppBar(
+        title: const Text(
+          '投稿一覧',
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.teal,
+        elevation: 5,
+      ),
       body: postsAsync.when(
         data: (posts) => ListView.builder(
+          padding: const EdgeInsets.all(12.0),
           itemCount: posts.length,
           itemBuilder: (context, index) {
             final post = posts[index];
-            return Card(
-              child: ListTile(
-                leading: post.imageURLs.isNotEmpty
-                    ? Image.network(post.imageURLs.first,
-                        width: 50, height: 50, fit: BoxFit.cover)
-                    : Icon(Icons.text_snippet),
-                title: Text(post.content),
-                subtitle: Text(post.postedAt.toLocal().toString()),
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => PostDetailsScreen(post: post)),
-                ),
-              ),
-            );
+            return PostCard(post: post);
           },
         ),
-        loading: () => Center(child: CircularProgressIndicator()),
-        error: (error, _) => Center(child: Text('エラー: $error')),
+        loading: () => ListView.builder(
+          padding: const EdgeInsets.all(12.0),
+          itemCount: 5,
+          itemBuilder: (context, index) => Container(
+            margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+            height: 200,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+          ),
+        ),
+        error: (error, _) => Center(
+          child: Text(
+            'エラー: $error',
+            style: const TextStyle(color: Colors.red),
+          ),
+        ),
       ),
     );
   }
