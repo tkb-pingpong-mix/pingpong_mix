@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:go_router/go_router.dart';
 import '../models/post_model.dart';
 import '../widgets/like_button.dart';
@@ -8,7 +9,6 @@ class PostDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // `go_router` の `extra` から `PostModel` を取得
     final post = GoRouterState.of(context).extra as PostModel?;
 
     if (post == null) {
@@ -18,45 +18,90 @@ class PostDetailsScreen extends StatelessWidget {
       );
     }
 
+    final bool hasImage = post.imageURLs != null && post.imageURLs!.isNotEmpty;
+    final bool hasTitle = post.title != null && post.title!.isNotEmpty;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('投稿詳細'),
         centerTitle: true,
         backgroundColor: Colors.teal,
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (post.imageURLs.isNotEmpty)
-            Image.network(
-              post.imageURLs.first,
-              width: double.infinity,
-              height: 250,
-              fit: BoxFit.cover,
-            ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  post.content,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (hasTitle)
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  post.title!,
                   style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
+                      fontSize: 22, fontWeight: FontWeight.bold),
                 ),
-                Text(
-                  '投稿日: ${post.postedAt.toLocal()}',
-                  style: const TextStyle(color: Colors.grey),
+              ),
+            if (hasImage)
+              SizedBox(
+                height: 250,
+                child: PageView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: post.imageURLs!.length,
+                  itemBuilder: (context, index) {
+                    return CachedNetworkImage(
+                      imageUrl: post.imageURLs![index],
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Container(
+                        height: 250,
+                        width: double.infinity,
+                        color: Colors.grey[300],
+                        child: const Center(child: CircularProgressIndicator()),
+                      ),
+                      errorWidget: (context, url, error) => Container(
+                        height: 250,
+                        width: double.infinity,
+                        color: Colors.grey,
+                        child: const Icon(Icons.image_not_supported,
+                            size: 50, color: Colors.white),
+                      ),
+                    );
+                  },
                 ),
-                LikeButton(
-                  postId: post.postId,
-                  likesId: post.likesId,
-                  initialLikes: post.likesCount,
-                ),
-              ],
+              ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                post.content,
+                style: const TextStyle(fontSize: 18),
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child:
+                  // 投稿日時
+                  Text('投稿日: ${post.postedAt.toLocal()}'),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  LikeButton(
+                    postId: post.postId,
+                    likesId: post.likesId,
+                    initialLikes: post.likesCount,
+                  ),
+                  Text(
+                    '${post.likesCount} いいね',
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
