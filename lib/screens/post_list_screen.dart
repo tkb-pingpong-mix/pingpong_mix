@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pingpong_mix/screens/post_card.dart';
+import 'package:pingpong_mix/widgets/post_card.dart';
 import '../models/post_model.dart';
 
 final postsProvider = StreamProvider.autoDispose<List<PostModel>>((ref) {
