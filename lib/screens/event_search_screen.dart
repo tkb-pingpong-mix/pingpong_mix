@@ -43,8 +43,7 @@ class EventSearchScreen extends ConsumerWidget {
                       title: Text(event.title),
                       subtitle: Text("状態: ${event.status}"),
                       onTap: () {
-                        Navigator.pushNamed(context, '/eventDetail',
-                            arguments: event);
+                        context.push('/home/events/detail', extra: event);
                       },
                     );
                   },
@@ -55,6 +54,12 @@ class EventSearchScreen extends ConsumerWidget {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.push('/home/events/create'); // イベント作成画面へ遷移
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }

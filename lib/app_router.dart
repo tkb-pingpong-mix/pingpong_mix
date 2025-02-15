@@ -1,14 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pingpong_mix/models/post_model.dart';
 import 'package:pingpong_mix/screens/chat_details_screen.dart';
 import 'package:pingpong_mix/screens/chat_list_screen.dart';
+import 'package:pingpong_mix/screens/event_create_screen.dart';
 import 'package:pingpong_mix/screens/map_screen.dart';
 import 'package:pingpong_mix/screens/post_create_screen.dart';
 import 'package:pingpong_mix/screens/post_details_screen.dart';
 import 'package:pingpong_mix/screens/filter_screen.dart';
-import 'package:pingpong_mix/viewmodels/user_viewmodel.dart';
 import 'screens/splash_screen.dart';
 import 'screens/auth_screen.dart';
 import 'screens/home_screen.dart';
@@ -18,6 +17,7 @@ import 'screens/clan_list_screen.dart';
 import 'screens/clan_edit_screen.dart';
 import 'screens/post_list_screen.dart';
 import 'screens/event_search_screen.dart';
+import 'screens/event_detail_screen.dart';
 
 class AppRouter {
   final GoRouter router = GoRouter(
@@ -40,11 +40,23 @@ class AppRouter {
           GoRoute(
             path: '/home/events',
             builder: (context, state) => const EventSearchScreen(),
-          ),
-          // フィルター画面（以前のモーダルをページ化）
-          GoRoute(
-            path: '/home/events/filter',
-            builder: (context, state) => const FilterScreen(),
+            routes: [
+              // フィルター画面
+              GoRoute(
+                path: 'filter',
+                builder: (context, state) => const FilterScreen(),
+              ),
+              // フィルター画面
+              GoRoute(
+                path: 'create',
+                builder: (context, state) => const EventCreateScreen(),
+              ),
+              // フィルター画面
+              GoRoute(
+                path: 'detail',
+                builder: (context, state) => const EventDetailScreen(),
+              ),
+            ],
           ),
           // 投稿一覧画面
           GoRoute(

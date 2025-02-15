@@ -100,10 +100,16 @@ class EventViewModel extends StateNotifier<AsyncValue<List<EventModel>>> {
   Future<void> createEvent(EventModel event) async {
     try {
       final eventRef = _firestore.collection('Events').doc(event.eventId);
-      await eventRef.set(event.toFirestore());
-      fetchEvents(); // 更新
+
+      // Firestore に保存するデータを明示的にデバッグ
+      final eventData = event.toFirestore();
+      print("Saving event data: $eventData");
+
+      await eventRef.set(eventData);
+      fetchEvents(); // イベント一覧を更新
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
+      print("Firestore Error: $e"); // エラー内容をログに出力
     }
   }
 

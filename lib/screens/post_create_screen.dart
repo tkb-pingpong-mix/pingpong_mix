@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:pingpong_mix/screens/filter_screen.dart';
 import 'package:pingpong_mix/viewmodels/post_create_viewmodel.dart';
 import 'package:pingpong_mix/viewmodels/user_viewmodel.dart';
 
@@ -44,7 +46,7 @@ class PostCreateScreen extends ConsumerWidget {
                       );
 
                       if (success && context.mounted) {
-                        Navigator.pop(context);
+                        context.pop();
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('投稿に失敗しました')),
@@ -54,9 +56,7 @@ class PostCreateScreen extends ConsumerWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.teal,
               ),
-              child: postState.isLoading
-                  ? const CircularProgressIndicator(color: Colors.white)
-                  : const Text('投稿する'),
+              child: postState.isLoading ? const CircularProgressIndicator(color: Colors.white) : const Text('投稿する'),
             ),
           ],
         ),

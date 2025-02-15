@@ -4,8 +4,8 @@ class EventModel {
   final String eventId;
   final String title;
   final String description;
-  final DateTime startDate;
-  final DateTime endDate;
+  final Timestamp startDate; // Firestore の Timestamp に統一
+  final Timestamp endDate; // Firestore の Timestamp に統一
   final String location;
   final String venue; // 必須: 会場名（自由記述）
   final String? venueId; // オプション: 卓球場ID（Venues コレクションと紐付け）
@@ -41,11 +41,11 @@ class EventModel {
   factory EventModel.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
     return EventModel(
-      eventId: data['eventId'] ?? '',
+      eventId: doc.id,
       title: data['title'] ?? '',
       description: data['description'] ?? '',
-      startDate: (data['startDate'] as Timestamp).toDate(),
-      endDate: (data['endDate'] as Timestamp).toDate(),
+      startDate: data['startDate'] as Timestamp, // Firestore の Timestamp
+      endDate: data['endDate'] as Timestamp, // Firestore の Timestamp
       location: data['location'] ?? '',
       venue: data['venue'] ?? '', // 会場名
       venueId: data['venueId'], // 卓球場ID（オプション）
@@ -68,8 +68,8 @@ class EventModel {
       'eventId': eventId,
       'title': title,
       'description': description,
-      'startDate': startDate,
-      'endDate': endDate,
+      'startDate': startDate, // Firestore の Timestamp
+      'endDate': endDate, // Firestore の Timestamp
       'location': location,
       'venue': venue, // 会場名
       if (venueId != null) 'venueId': venueId, // 卓球場ID（オプション）
@@ -79,7 +79,8 @@ class EventModel {
       'matchHistory': matchHistory,
       'eventType': eventType,
       'isLeague': isLeague,
-      if (maxParticipants != null) 'maxParticipants': maxParticipants, // 最大参加人数（オプション）
+      if (maxParticipants != null)
+        'maxParticipants': maxParticipants, // 最大参加人数（オプション）
       'status': status, // 募集状態（英語表記）
     };
   }
