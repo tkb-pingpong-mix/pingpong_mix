@@ -7,6 +7,7 @@ import 'package:pingpong_mix/screens/chat_list_screen.dart';
 import 'package:pingpong_mix/screens/map_screen.dart';
 import 'package:pingpong_mix/screens/post_create_screen.dart';
 import 'package:pingpong_mix/screens/post_details_screen.dart';
+import 'package:pingpong_mix/screens/filter_screen.dart';
 import 'package:pingpong_mix/viewmodels/user_viewmodel.dart';
 import 'screens/splash_screen.dart';
 import 'screens/auth_screen.dart';
@@ -16,23 +17,7 @@ import 'screens/profile_edit_screen.dart';
 import 'screens/clan_list_screen.dart';
 import 'screens/clan_edit_screen.dart';
 import 'screens/post_list_screen.dart';
-import 'screens/matching_screen.dart';
-
-// 設計概要
-// アプリ起動時の流れ
-
-// 最初に SplashScreen を表示。
-// ユーザーがログイン済みかどうかを確認し、以下のいずれかに遷移：
-// ログイン済み → HomeScreen
-// 未ログイン → AuthScreen
-// HomeScreen の構成
-
-// BottomNavigationBar を使用して以下のタブを管理：
-// チャット (/home/chats)
-// マッチング (/home/matching)
-// 投稿 (/home/posts)
-// AppBar のプロファイルボタン：
-// プロファイル画面に遷移 (/home/profile)
+import 'screens/event_search_screen.dart';
 
 class AppRouter {
   final GoRouter router = GoRouter(
@@ -48,14 +33,20 @@ class AppRouter {
       ),
       ShellRoute(
         builder: (context, state, child) {
-          return HomeScreen(
-              child: child); // HomeScreen with BottomNavigationBar
+          return HomeScreen(child: child);
         },
         routes: [
+          // イベント検索画面
           GoRoute(
-            path: '/home/matching',
-            builder: (context, state) => const MatchingScreen(),
+            path: '/home/events',
+            builder: (context, state) => const EventSearchScreen(),
           ),
+          // フィルター画面（以前のモーダルをページ化）
+          GoRoute(
+            path: '/home/events/filter',
+            builder: (context, state) => const FilterScreen(),
+          ),
+          // 投稿一覧画面
           GoRoute(
             path: '/home/posts',
             builder: (context, state) => PostListScreen(),
@@ -76,7 +67,6 @@ class AppRouter {
               ),
             ],
           ),
-
           // チャットリスト画面
           GoRoute(
             path: '/home/chats',
@@ -88,7 +78,6 @@ class AppRouter {
                 builder: (context, state) {
                   final chatId = state.pathParameters['chatId'];
                   if (chatId == null) {
-                    // エラーハンドリング: chatId が無い場合
                     throw Exception('Invalid Chat ID');
                   }
                   return ChatDetailsScreen(chatId: chatId);
@@ -96,19 +85,11 @@ class AppRouter {
               ),
             ],
           ),
+          // プロフィール画面
           GoRoute(
             path: '/home/profile',
             builder: (context, state) {
-              final container = ProviderScope.containerOf(context);
-              final userViewModel =
-                  container.read(userViewModelProvider.notifier);
-
-              final userId = FirebaseAuth.instance.currentUser?.uid;
-              if (userId != null) {
-                userViewModel.fetchUser(userId); // fetchUserを呼び出す
-              }
-
-              return const ProfileScreen(); // ProfileScreenを返す
+              return const ProfileScreen();
             },
             routes: [
               GoRoute(
@@ -117,10 +98,12 @@ class AppRouter {
               ),
             ],
           ),
+          // マップ画面
           GoRoute(
             path: '/home/map',
             builder: (context, state) => const MapScreen(),
           ),
+          // クラン画面
           GoRoute(
             path: '/home/clan',
             builder: (context, state) => const ClanListScreen(),
@@ -143,7 +126,7 @@ class AppRouter {
       }
 
       if (isLoggedIn && isAuthRoute) {
-        return '/home/matching';
+        return '/home/events';
       }
 
       return null;

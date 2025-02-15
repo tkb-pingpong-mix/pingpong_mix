@@ -18,7 +18,7 @@ class SplashScreen extends ConsumerWidget {
       if (next is AsyncData<User?>) {
         final user = next.value;
         if (user != null) {
-          context.go('/home/matching');
+          context.go('/home/events');
         } else {
           context.go('/auth');
         }

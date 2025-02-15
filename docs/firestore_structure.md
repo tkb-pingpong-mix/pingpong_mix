@@ -45,8 +45,10 @@
 - **ドキュメントID**: `matchId` (自動生成)
 - **フィールド**:
   - `matchId`: 試合ID（ドキュメントIDと同じ）
+ -  `eventId`: イベントID　event2025-001,
   - `playerOneId`: プレイヤー1のユーザーID
   - `playerTwoId`: プレイヤー2のユーザーID
+  - `stats`: 状態 //（pending = 申請中, confirmed = 承認済み, completed = 試合終了）
   - `date`: 試合日時
   - `location`: 試合場所
   - `result`: 試合結果（例: Player One won, Player Two won, Draw）
@@ -88,6 +90,7 @@
   - `organizerId`: 主催者のユーザーID
   - `imageURL`: イベントのイメージ画像URL
   - `participants`: 参加者リスト
+  - `matchHistory`: 試合履歴["match001", "match002"]
 
 ### 6. Posts コレクション
 - **概要**: ユーザーが作成する一般的な投稿を管理します。

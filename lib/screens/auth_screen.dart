@@ -93,7 +93,7 @@ class AuthScreen extends StatelessWidget {
                         final userId = FirebaseAuth.instance.currentUser?.uid;
                         if (userId != null) {
                           await userViewModel.fetchUser(userId);
-                          context.go('/home/matching');
+                          context.go('/home/events');
                           authViewModel.errorMessage = null; // エラーメッセージをリセット
                         }
                       } catch (e) {
@@ -148,7 +148,7 @@ class AuthScreen extends StatelessWidget {
                           posts: [],
                         );
                         await userViewModel.createUser(newUser);
-                        context.go('/home/matching');
+                        context.go('/home/events');
                         authViewModel.errorMessage = null; // エラーメッセージをリセット
                       }
                     },

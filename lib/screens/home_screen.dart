@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pingpong_mix/providers/auth_provider.dart';
 
 class AppIcons {
-  static const IconData matching = Icons.search;
+  static const IconData eventSearch = Icons.search;
   static const IconData posts = Icons.event;
   static const IconData chats = Icons.chat;
   static const IconData profile = Icons.person;
@@ -20,7 +20,7 @@ class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key, required this.child});
 
   static final List<Map<String, dynamic>> _tabs = [
-    {'label': 'Matching', 'icon': AppIcons.matching, 'route': '/home/matching'},
+    {'label': 'Events', 'icon': AppIcons.eventSearch, 'route': '/home/events'},
     {'label': 'Posts', 'icon': AppIcons.posts, 'route': '/home/posts'},
     {'label': 'Chats', 'icon': AppIcons.chats, 'route': '/home/chats'},
   ];
