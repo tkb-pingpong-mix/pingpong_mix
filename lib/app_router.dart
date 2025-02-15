@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pingpong_mix/models/event_model.dart';
 import 'package:pingpong_mix/models/post_model.dart';
 import 'package:pingpong_mix/screens/chat_details_screen.dart';
 import 'package:pingpong_mix/screens/chat_list_screen.dart';
@@ -54,7 +55,13 @@ class AppRouter {
               // フィルター画面
               GoRoute(
                 path: 'detail',
-                builder: (context, state) => const EventDetailScreen(),
+                builder: (context, state) {
+                  final post = state.extra as EventModel?;
+                  if (post == null) {
+                    throw Exception('EventModel が null です');
+                  }
+                  return EventDetailScreen();
+                },
               ),
             ],
           ),
