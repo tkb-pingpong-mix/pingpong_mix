@@ -33,23 +33,16 @@ class ProfileScreen extends ConsumerWidget {
                     // プロフィール画像
                     CircleAvatar(
                       radius: 60,
-                      backgroundImage: user.profilePicture.isNotEmpty
-                          ? NetworkImage(user.profilePicture)
-                          : const AssetImage(
-                                  'assets/images/profile_placeholder.png')
-                              as ImageProvider,
+                      backgroundImage: user.profilePicture.isNotEmpty ? NetworkImage(user.profilePicture) : const AssetImage('assets/images/profile_placeholder.png') as ImageProvider,
                     ),
                     const SizedBox(height: 16),
 
                     // 表示名
                     Text(
-                      user.displayName.isNotEmpty
-                          ? user.displayName
-                          : 'Guest User',
-                      style:
-                          Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                      user.displayName.isNotEmpty ? user.displayName : 'Guest User',
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
                     const SizedBox(height: 8),
 
@@ -57,10 +50,7 @@ class ProfileScreen extends ConsumerWidget {
                     Text(
                       user.email.isNotEmpty ? user.email : 'guest@example.com',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withOpacity(0.6),
+                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                           ),
                     ),
                     const SizedBox(height: 24),
@@ -71,10 +61,7 @@ class ProfileScreen extends ConsumerWidget {
                           children: [
                             Text(
                               '${user.followers ?? 0}',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall
-                                  ?.copyWith(
+                              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
                             ),
@@ -89,10 +76,7 @@ class ProfileScreen extends ConsumerWidget {
                           children: [
                             Text(
                               '${user.following ?? 0}',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall
-                                  ?.copyWith(
+                              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
                             ),
@@ -125,57 +109,42 @@ class ProfileScreen extends ConsumerWidget {
                         ProfileDetailRow(
                           icon: Icons.star,
                           label: 'Skill Level',
-                          value: user.skillLevel.isNotEmpty
-                              ? user.skillLevel
-                              : 'Unknown',
+                          value: user.skillLevel.isNotEmpty ? user.skillLevel : 'Unknown',
                         ),
                         ProfileDetailRow(
                           icon: Icons.location_on,
                           label: 'Region',
-                          value: user.region.isNotEmpty
-                              ? user.region
-                              : 'Not Specified',
-                        ),
-                        ProfileDetailRow(
-                          icon: Icons.sports_tennis,
-                          label: 'Play Style',
-                          value: user.playStyle.isNotEmpty
-                              ? user.playStyle
-                              : 'Unspecified',
+                          value: user.region.isNotEmpty ? user.region : 'Not Specified',
                         ),
                         ProfileDetailRow(
                           icon: Icons.sports_tennis,
                           label: 'Racket',
-                          value: user.racket?.isNotEmpty == true
-                              ? user.racket!
-                              : 'Unspecified',
+                          value: user.racket?.isNotEmpty == true ? user.racket! : 'Unspecified',
                         ),
                         ProfileDetailRow(
                           icon: Icons.sports_tennis,
                           label: 'Forehand Rubber',
-                          value: user.forehandRubber?.isNotEmpty == true
-                              ? user.forehandRubber!
-                              : 'Unspecified',
+                          value: user.forehandRubber?.isNotEmpty == true ? user.forehandRubber! : 'Unspecified',
                         ),
                         ProfileDetailRow(
                           icon: Icons.sports_tennis,
                           label: 'Backhand Rubber',
-                          value: user.backhandRubber?.isNotEmpty == true
-                              ? user.backhandRubber!
-                              : 'Unspecified',
+                          value: user.backhandRubber?.isNotEmpty == true ? user.backhandRubber! : 'Unspecified',
                         ),
                         ProfileDetailRow(
                           icon: Icons.directions_run,
                           label: 'Shoes',
-                          value: user.shoes?.isNotEmpty == true
-                              ? user.shoes!
-                              : 'Unspecified',
+                          value: user.shoes?.isNotEmpty == true ? user.shoes! : 'Unspecified',
+                        ),
+                        ProfileDetailRow(
+                          icon: Icons.sports_tennis,
+                          label: 'Play Style',
+                          value: user.playStyle.isNotEmpty ? user.playStyle : 'Unspecified',
                         ),
                         ProfileDetailRow(
                           icon: Icons.bar_chart,
                           label: 'Win Rate',
-                          value:
-                              '${user.winRate > 0 ? user.winRate.toStringAsFixed(2) : '0.0'}%',
+                          value: '${user.winRate > 0 ? user.winRate.toStringAsFixed(2) : '0.0'}%',
                         ),
                         ElevatedButton(
                           onPressed: () {
@@ -192,21 +161,15 @@ class ProfileScreen extends ConsumerWidget {
                 // リストセクション
                 ProfileListSection(
                   title: 'Recent Matches',
-                  items: user.recentMatches.isNotEmpty
-                      ? user.recentMatches
-                      : ['No matches played yet'],
+                  items: user.recentMatches.isNotEmpty ? user.recentMatches : ['No matches played yet'],
                 ),
                 ProfileListSection(
                   title: 'Clans',
-                  items: user.clans.isNotEmpty
-                      ? user.clans
-                      : ['Not part of any clans'],
+                  items: user.clans.isNotEmpty ? user.clans : ['Not part of any clans'],
                 ),
                 ProfileListSection(
                   title: 'Events',
-                  items: user.events.isNotEmpty
-                      ? user.events
-                      : ['No events joined'],
+                  items: user.events.isNotEmpty ? user.events : ['No events joined'],
                 ),
               ],
             ),
