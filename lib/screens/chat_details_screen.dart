@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pingpong_mix/viewmodels/user_viewmodel.dart';
 import '../viewmodels/messages_viewmodel.dart';
 
 class ChatDetailsScreen extends ConsumerWidget {
@@ -41,7 +42,13 @@ class ChatDetailsScreen extends ConsumerWidget {
                 IconButton(
                   icon: Icon(Icons.send),
                   onPressed: () {
-                    ref.read(messagesViewModelProvider(chatRoomId).notifier).sendMessage('userId', _messageController.text);
+                    final user = ref.watch(userViewModelProvider).value;
+                    if (user == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('ユーザー情報を取得できませんでした')),
+                      );
+                    }
+                    ref.read(messagesViewModelProvider(chatRoomId).notifier).sendMessage(user!.userId, _messageController.text);
                     _messageController.clear();
                   },
                 ),
