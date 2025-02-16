@@ -14,9 +14,10 @@ class EventDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userViewModelProvider).value;
+    final eventFuture = ref.watch(eventViewModelProvider.notifier).fetchEventById(eventId);
 
     return FutureBuilder<EventModel?>(
-      future: ref.read(eventViewModelProvider.notifier).fetchEventById(eventId),
+      future: eventFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
@@ -68,6 +69,7 @@ class EventDetailScreen extends ConsumerWidget {
                     ElevatedButton(
                       onPressed: () async {
                         await ref.read(eventViewModelProvider.notifier).joinEvent(event.eventId, user.userId);
+                        ref.invalidate(eventViewModelProvider); // 画面を更新
                       },
                       child: const Text("参加する"),
                     ),
