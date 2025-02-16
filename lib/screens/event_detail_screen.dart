@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/event_model.dart';
 import '../viewmodels/event_viewmodel.dart';
 import '../viewmodels/user_viewmodel.dart';
+import '../viewmodels/chat_rooms_viewmodel.dart';
 
 class EventDetailScreen extends ConsumerWidget {
   final String eventId;
@@ -72,6 +74,21 @@ class EventDetailScreen extends ConsumerWidget {
 
                   // すでに参加済みの場合
                   if (isParticipant) const Text("あなたはこのイベントに参加済みです", style: TextStyle(color: Colors.green)),
+
+                  const SizedBox(height: 20),
+
+                  // チャットボタン
+                  if (isParticipant)
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        final chatId = await ref.read(chatRoomsViewModelProvider.notifier).createChatRoomByEventID(event.eventId, event.participants, user.userId);
+                        if (context.mounted) {
+                          context.go('/home/chats/detail/$chatId');
+                        }
+                      },
+                      icon: const Icon(Icons.chat),
+                      label: const Text("イベントチャットを開く"),
+                    ),
                 ],
               ),
             ),
