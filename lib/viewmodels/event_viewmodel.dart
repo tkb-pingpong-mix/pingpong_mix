@@ -4,7 +4,7 @@ import 'package:pingpong_mix/providers/event_filter_state_provider.dart';
 import 'package:pingpong_mix/utils/log.dart';
 import '../models/event_model.dart';
 
-final eventViewModelProvider = StateNotifierProvider<EventViewModel, AsyncValue<List<EventModel>>>((ref) {
+final eventViewModelProvider = StateNotifierProvider.autoDispose<EventViewModel, AsyncValue<List<EventModel>>>((ref) {
   return EventViewModel();
 });
 
