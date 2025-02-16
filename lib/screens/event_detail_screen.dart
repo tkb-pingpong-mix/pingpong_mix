@@ -26,7 +26,6 @@ class EventDetailScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('イベント詳細'),
         centerTitle: true,
-        backgroundColor: Colors.teal,
       ),
       body: SingleChildScrollView(
         child: Padding(

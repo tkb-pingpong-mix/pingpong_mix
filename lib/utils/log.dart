@@ -1,6 +1,6 @@
 import 'package:logger/logger.dart';
 
-class LogUtil {
+class Log {
   static final Logger _logger = Logger(
     printer: PrettyPrinter(),
   );

@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pingpong_mix/providers/event_filter_state_provider.dart';
-import 'package:pingpong_mix/utils/logUtil.dart';
+import 'package:pingpong_mix/utils/log.dart';
 import '../models/event_model.dart';
 
 final eventViewModelProvider = StateNotifierProvider<EventViewModel, AsyncValue<List<EventModel>>>((ref) {
@@ -29,67 +29,67 @@ class EventViewModel extends StateNotifier<AsyncValue<List<EventModel>>> {
 
   Future<void> fetchFilteredEvents(WidgetRef ref, {bool loadMore = false}) async {
     try {
-      LogUtil.d("fetchFilteredEvents: 処理開始");
+      Log.d("fetchFilteredEvents: 処理開始");
 
       final filter = ref.read(eventFilterProvider);
       Query query = FirebaseFirestore.instance.collection('Events').where('status', isEqualTo: filter.status);
 
-      LogUtil.d("フィルタ条件: status = ${filter.status}");
+      Log.d("フィルタ条件: status = ${filter.status}");
 
       if (filter.keyword != null && filter.keyword!.isNotEmpty) {
         query = query.where("title", isGreaterThanOrEqualTo: filter.keyword).where("title", isLessThanOrEqualTo: "${filter.keyword}\uf8ff");
-        LogUtil.d("キーワード検索: ${filter.keyword}");
+        Log.d("キーワード検索: ${filter.keyword}");
       }
 
       if (filter.startDateRange != null && filter.endDateRange != null) {
         query = query.where("startDate", isGreaterThanOrEqualTo: filter.startDateRange).where("startDate", isLessThanOrEqualTo: filter.endDateRange);
-        LogUtil.d("日付範囲検索: ${filter.startDateRange} 〜 ${filter.endDateRange}");
+        Log.d("日付範囲検索: ${filter.startDateRange} 〜 ${filter.endDateRange}");
       }
 
       if (filter.startTimeRange != null && filter.endTimeRange != null) {
         query = query.where("startDate.hour", isGreaterThanOrEqualTo: filter.startTimeRange).where("startDate.hour", isLessThanOrEqualTo: filter.endTimeRange);
-        LogUtil.d("時間帯検索: ${filter.startTimeRange} 〜 ${filter.endTimeRange}");
+        Log.d("時間帯検索: ${filter.startTimeRange} 〜 ${filter.endTimeRange}");
       }
 
       if (filter.eventType != null) {
         query = query.where("eventType", isEqualTo: filter.eventType);
-        LogUtil.d("イベントタイプ: ${filter.eventType}");
+        Log.d("イベントタイプ: ${filter.eventType}");
       }
 
       if (filter.location != null) {
         query = query.where("location", isEqualTo: filter.location);
-        LogUtil.d("ロケーション: ${filter.location}");
+        Log.d("ロケーション: ${filter.location}");
       }
 
       if (filter.venueId != null) {
         query = query.where("venueId", isEqualTo: filter.venueId);
-        LogUtil.d("会場ID: ${filter.venueId}");
+        Log.d("会場ID: ${filter.venueId}");
       }
 
       if (filter.organizerId != null) {
         query = query.where("organizerId", isEqualTo: filter.organizerId);
-        LogUtil.d("主催者ID: ${filter.organizerId}");
+        Log.d("主催者ID: ${filter.organizerId}");
       }
 
       query = query.orderBy("startDate").limit(30);
-      LogUtil.d("クエリの最終形: ${query.toString()}");
+      Log.d("クエリの最終形: ${query.toString()}");
 
       if (loadMore && filter.lastDocument != null) {
         query = query.startAfterDocument(filter.lastDocument);
-        LogUtil.d("ページネーション: lastDocument=${filter.lastDocument.id}");
+        Log.d("ページネーション: lastDocument=${filter.lastDocument.id}");
       }
 
       final querySnapshot = await query.get();
-      LogUtil.d("取得したイベント数: ${querySnapshot.docs.length}");
+      Log.d("取得したイベント数: ${querySnapshot.docs.length}");
 
       final events = querySnapshot.docs.map((doc) => EventModel.fromFirestore(doc)).toList();
 
       ref.read(eventFilterProvider.notifier).updateLastDocument(querySnapshot.docs.isNotEmpty ? querySnapshot.docs.last : null);
 
-      LogUtil.d("fetchFilteredEvents: 成功");
+      Log.d("fetchFilteredEvents: 成功");
       state = AsyncValue.data(events);
     } catch (e, stackTrace) {
-      LogUtil.e("fetchFilteredEvents: エラー発生", error: e, stackTrace: stackTrace);
+      Log.e("fetchFilteredEvents: エラー発生", error: e, stackTrace: stackTrace);
       state = AsyncValue.error(e, stackTrace);
     }
   }

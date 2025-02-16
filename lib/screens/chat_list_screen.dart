@@ -1,44 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../viewmodels/chat_rooms_viewmodel.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pingpong_mix/models/chat_room_model.dart';
 
-class ChatListScreen extends StatelessWidget {
-  final List<ChatRoomModel> chatRoomModel = [
-    ChatRoomModel(
-        id: '1',
-        senderName: 'Alice',
-        lastMessage: 'Hello!',
-        timestamp: DateTime.now()),
-    ChatRoomModel(
-        id: '2',
-        senderName: 'Bob',
-        lastMessage: 'Let’s play!',
-        timestamp: DateTime.now().subtract(Duration(minutes: 10))),
-    // Add more sample messages here
-  ];
-
-  ChatListScreen({super.key});
+class ChatListScreen extends ConsumerWidget {
+  const ChatListScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final chatRooms = ref.watch(chatRoomsViewModelProvider);
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Chats'),
-      ),
+      appBar: AppBar(title: Text('チャット一覧')),
       body: ListView.builder(
-        itemCount: chatRoomModel.length,
+        itemCount: chatRooms.length,
         itemBuilder: (context, index) {
-          final chat = chatRoomModel[index];
+          final chat = chatRooms[index];
           return ListTile(
-            title: Text(chat.senderName),
-            subtitle: Text(chat.lastMessage),
-            trailing: Text(
-              "${chat.timestamp.hour}:${chat.timestamp.minute}",
-            ),
-            onTap: () {
-              // 修正: chat.id を使用
-              context.go('/home/chats/detail/${chat.id}');
-            },
+            title: Text(chat.lastMessage),
+            onTap: () => context.go('/home/chats/detail/${chat.id}'),
           );
         },
       ),

@@ -47,17 +47,17 @@ class AppRouter {
                 path: 'filter',
                 builder: (context, state) => const FilterScreen(),
               ),
-              // フィルター画面
+              // イベント作成画面
               GoRoute(
                 path: 'create',
                 builder: (context, state) => const EventCreateScreen(),
               ),
-              // フィルター画面
+              // イベント詳細画面
               GoRoute(
                 path: 'detail',
                 builder: (context, state) {
-                  final post = state.extra as EventModel?;
-                  if (post == null) {
+                  final event = state.extra as EventModel?;
+                  if (event == null) {
                     throw Exception('EventModel が null です');
                   }
                   return EventDetailScreen();
@@ -95,11 +95,11 @@ class AppRouter {
               GoRoute(
                 path: 'detail/:chatId',
                 builder: (context, state) {
-                  final chatId = state.pathParameters['chatId'];
-                  if (chatId == null) {
+                  final chatRoomId = state.pathParameters['chatId'];
+                  if (chatRoomId == null) {
                     throw Exception('Invalid Chat ID');
                   }
-                  return ChatDetailsScreen(chatId: chatId);
+                  return ChatDetailsScreen(chatRoomId: chatRoomId);
                 },
               ),
             ],

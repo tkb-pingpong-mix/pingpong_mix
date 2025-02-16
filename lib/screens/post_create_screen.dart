@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pingpong_mix/screens/filter_screen.dart';
 import 'package:pingpong_mix/viewmodels/post_create_viewmodel.dart';
 import 'package:pingpong_mix/viewmodels/user_viewmodel.dart';
 
