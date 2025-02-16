@@ -15,34 +15,43 @@ class ChatRoomsViewModel extends StateNotifier<List<ChatRoomModel>> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   ChatRoomsViewModel(this.ref)
-      : _chatService = ref.read(chatServiceProvider),
+      : _chatService = ref.watch(chatServiceProvider),
         super([]) {
     _fetchChatRooms();
   }
 
   void _fetchChatRooms() {
-    final userState = ref.read(userViewModelProvider);
+    final userState = ref.watch(userViewModelProvider);
 
     userState.when(
       data: (user) {
         final userId = user?.userId;
         if (userId == null) return;
 
-        _chatService.getChatRooms(userId).listen((chatRooms) {
-          state = chatRooms;
-        });
+        _chatService.getChatRooms(userId).listen(
+          (chatRooms) {
+            Log.d('Streaming Chat Rooms: ${chatRooms.length}');
+            for (var room in chatRooms) {
+              Log.d('Room ID: ${room.id}, Members: ${room.members}');
+            }
+            state = chatRooms;
+          },
+          onError: (error) {
+            Log.d('Chat Rooms Stream Error: $error');
+          },
+        );
       },
       loading: () {
-        // ローディング中は何もしない
+        Log.d('User data is loading...');
       },
       error: (err, stack) {
-        print('Error fetching user: $err');
+        Log.d('Error fetching user: $err');
       },
     );
   }
 
   /// イベント ID に紐づく ChatRoom を作成または取得￥
-  Future<String> createChatRoomByEventID(String eventId, List<String> participants, String currentUserId) async {
+  Future<String> createChatRoomByEventID(String eventId, String eventTitle, List<String> participants, String currentUserId) async {
     try {
       Log.d("チャットルーム検索開始: eventId = $eventId", tag: "ChatRoom");
 
@@ -82,12 +91,16 @@ class ChatRoomsViewModel extends StateNotifier<List<ChatRoomModel>> {
       Log.d("チャットルームが見つからないため、新規作成を実行", tag: "ChatRoom");
 
       final newChatRef = _firestore.collection('ChatRooms').doc();
+      final members = {...participants, currentUserId}.toList();
       final newChatRoom = ChatRoomModel(
         id: newChatRef.id,
-        members: {...participants, currentUserId}.toList(),
+        members: members,
         lastMessage: "",
         lastUpdated: DateTime.now(),
         eventId: eventId,
+        roomName: eventTitle,
+        createdAt: DateTime.now(),
+        unreadCount: {for (var member in members) member: 0},
       );
 
       Log.d("新規チャットルーム作成: chatRoomId = ${newChatRef.id}, members = ${newChatRoom.members}", tag: "ChatRoom");

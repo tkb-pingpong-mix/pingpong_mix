@@ -83,7 +83,7 @@ class EventDetailScreen extends ConsumerWidget {
                   if (isParticipant)
                     ElevatedButton.icon(
                       onPressed: () async {
-                        final chatId = await ref.read(chatRoomsViewModelProvider.notifier).createChatRoomByEventID(event.eventId, event.participants, user.userId);
+                        final chatId = await ref.read(chatRoomsViewModelProvider.notifier).createChatRoomByEventID(event.eventId, event.title, event.participants, user.userId);
                         if (context.mounted) {
                           context.go('/home/chats/detail/$chatId');
                         }

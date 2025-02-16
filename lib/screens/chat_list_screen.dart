@@ -10,6 +10,8 @@ class ChatListScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final chatRooms = ref.watch(chatRoomsViewModelProvider);
 
+    print('UI Rebuilding: Chat Rooms Length = ${chatRooms.length}');
+
     return Scaffold(
       appBar: AppBar(title: Text('チャット一覧')),
       body: ListView.builder(
