@@ -97,13 +97,17 @@ class EventViewModel extends StateNotifier<AsyncValue<List<EventModel>>> {
   /// eventIdに紐づくEventを取得
   Future<EventModel?> fetchEventById(String eventId) async {
     try {
+      Log.d("fetchEventById: eventId=$eventId 取得開始");
       final docSnapshot = await _firestore.collection('Events').doc(eventId).get();
 
       if (!docSnapshot.exists) {
+        Log.d("fetchEventById: eventId=$eventId は存在しません");
         return null; // イベントが存在しない場合
       }
+      Log.d("fetchEventById: eventId=$eventId 取得成功");
       return EventModel.fromFirestore(docSnapshot);
-    } catch (e) {
+    } catch (e, stackTrace) {
+      Log.e("fetchEventById: エラー発生", error: e, stackTrace: stackTrace);
       return null; // エラーハンドリング
     }
   }
@@ -115,23 +119,25 @@ class EventViewModel extends StateNotifier<AsyncValue<List<EventModel>>> {
 
       // Firestore に保存するデータを明示的にデバッグ
       final eventData = event.toFirestore();
-      print("Saving event data: $eventData");
+      Log.d("Saving event data: $eventData");
 
       await eventRef.set(eventData);
       fetchEvents(); // イベント一覧を更新
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
-      print("Firestore Error: $e"); // エラー内容をログに出力
+      Log.e("Firestore Error: $e"); // エラー内容をログに出力
     }
   }
 
   /// イベントに参加（最大参加人数を考慮）
   Future<void> joinEvent(String eventId, String userId) async {
     try {
+      Log.d("joinEvent: eventId=$eventId, userId=$userId 参加処理開始");
       final eventRef = _firestore.collection('Events').doc(eventId);
       final eventDoc = await eventRef.get();
 
       if (!eventDoc.exists) {
+        Log.e("joinEvent: eventId=$eventId は存在しません");
         state = AsyncValue.error("イベントが存在しません", StackTrace.current);
         return;
       }
@@ -139,8 +145,10 @@ class EventViewModel extends StateNotifier<AsyncValue<List<EventModel>>> {
       final event = EventModel.fromFirestore(eventDoc);
       final int currentParticipants = event.participants.length;
       final int? maxParticipants = event.maxParticipants;
+      Log.d("joinEvent: 現在の参加者数 $currentParticipants, 最大参加者数 $maxParticipants");
 
       if (maxParticipants != null && currentParticipants >= maxParticipants) {
+        Log.e("joinEvent: eventId=$eventId は満員です");
         state = AsyncValue.error("このイベントはすでに締め切られています", StackTrace.current);
         return;
       }
@@ -148,15 +156,19 @@ class EventViewModel extends StateNotifier<AsyncValue<List<EventModel>>> {
       await eventRef.update({
         'participants': FieldValue.arrayUnion([userId])
       });
+      Log.d("joinEvent: userId=$userId を追加");
 
       // もし現在の参加者数 +1 が上限に達した場合、`status` を `closed` に更新
       if (maxParticipants != null && currentParticipants + 1 == maxParticipants) {
         await eventRef.update({'status': 'closed'});
+        Log.d("joinEvent: eventId=$eventId を 'closed' に更新");
       }
 
-      fetchEvents(); // 更新
-    } catch (e) {
-      state = AsyncValue.error(e, StackTrace.current);
+      Log.d("joinEvent: eventId=$eventId, userId=$userId 参加処理完了");
+      fetchEvents();
+    } catch (e, stackTrace) {
+      Log.e("joinEvent: エラー発生", error: e, stackTrace: stackTrace);
+      state = AsyncValue.error(e, stackTrace);
     }
   }
 
