@@ -94,6 +94,20 @@ class EventViewModel extends StateNotifier<AsyncValue<List<EventModel>>> {
     }
   }
 
+  /// eventIdに紐づくEventを取得
+  Future<EventModel?> fetchEventById(String eventId) async {
+    try {
+      final docSnapshot = await _firestore.collection('Events').doc(eventId).get();
+
+      if (!docSnapshot.exists) {
+        return null; // イベントが存在しない場合
+      }
+      return EventModel.fromFirestore(docSnapshot);
+    } catch (e) {
+      return null; // エラーハンドリング
+    }
+  }
+
   /// 新しいイベントを作成（主催者情報・最大参加人数を含む）
   Future<void> createEvent(EventModel event) async {
     try {

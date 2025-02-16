@@ -43,7 +43,7 @@ class EventSearchScreen extends ConsumerWidget {
                       title: Text(event.title),
                       subtitle: Text("状態: ${event.status}"),
                       onTap: () {
-                        context.push('/home/events/detail', extra: event);
+                        context.push('/home/events/detail/${event.eventId}');
                       },
                     );
                   },
