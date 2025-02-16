@@ -5,7 +5,7 @@ import '../viewmodels/event_viewmodel.dart';
 import '../widgets/keyword_search_bar.dart';
 
 class EventSearchScreen extends ConsumerWidget {
-  const EventSearchScreen({Key? key}) : super(key: key);
+  const EventSearchScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

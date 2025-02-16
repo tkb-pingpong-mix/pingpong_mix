@@ -4,7 +4,7 @@ import '../providers/event_filter_state_provider.dart';
 import '../viewmodels/event_viewmodel.dart';
 
 class KeywordSearchBar extends ConsumerStatefulWidget {
-  const KeywordSearchBar({Key? key}) : super(key: key);
+  const KeywordSearchBar({super.key});
 
   @override
   ConsumerState<KeywordSearchBar> createState() => _KeywordSearchBarState();

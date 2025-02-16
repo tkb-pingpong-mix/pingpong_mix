@@ -38,7 +38,7 @@ class EventFilterStateNotifier extends StateNotifier<EventFilterState> {
   }
 
   void updateKeyword(String keyword) {
-    state = state.copyWith(keyword: keyword.isNotEmpty ? keyword : null);
+    state = state.copyWith(keyword: keyword);
   }
 
   void updateLastDocument(dynamic lastDoc) {
@@ -54,7 +54,6 @@ class EventFilterStateNotifier extends StateNotifier<EventFilterState> {
   }
 }
 
-final eventFilterProvider =
-    StateNotifierProvider<EventFilterStateNotifier, EventFilterState>((ref) {
+final eventFilterProvider = StateNotifierProvider<EventFilterStateNotifier, EventFilterState>((ref) {
   return EventFilterStateNotifier();
 });
