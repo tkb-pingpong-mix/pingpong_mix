@@ -4,19 +4,21 @@
 
 ## 🚀 機能一覧
 - **ユーザー認証**: Firebase Authentication を使用したメール認証。
-   - ![AuthScreen](%E3%83%A6%E3%83%BC%E3%82%B5%E3%82%99%E3%83%BC%E8%AA%8D%E8%A8%BC.png)
+   - <img src="screenshots/user_auth.png" width="200">
 - **チャット**: Firestore によるリアルタイムチャット。
-   - ![Alt text](%E3%82%A4%E3%83%98%E3%82%99%E3%83%B3%E3%83%88%E4%BD%9C%E6%88%90.png)
+   - <img src="screenshots/chat_list.png" width="200">
+   - <img src="screenshots/chat_detail.png" width="200">
 - **イベント管理**: 卓球イベントの作成・参加。
-   - ![Alt text](%E3%82%A4%E3%83%98%E3%82%99%E3%83%B3%E3%83%88%E6%A4%9C%E7%B4%A2.png)
-   - ![Event Fileter](%E3%82%A4%E3%83%98%E3%82%99%E3%83%B3%E3%83%88%E7%B5%9E%E3%82%8A%E8%BE%BC%E3%81%BF.png)
-   - ![Alt text](%E3%82%A4%E3%83%98%E3%82%99%E3%83%B3%E3%83%88%E6%A4%9C%E7%B4%A2%E5%BE%8C.png)
+   - <img src="screenshots/create_event.png" width="200">
+   - <img src="screenshots/event_search.png" width="200">
+   - <img src="screenshots/event_filter.png" width="200">
+   - <img src="screenshots/filtered_event.png" width="200">
 - **投稿機能**: ユーザーが画像付きの投稿を共有可能。
-  - ![Alt text](%E6%8A%95%E7%A8%BF%E4%B8%80%E8%A6%A7.png)
-  - ![Alt text](post_detail.png)
-- **プロフィール編集**: ユーザー自分のプロフィールを編集できます
-  - ![Alt text](Profile.png)
-  - ![Alt text](profile_edit.png)
+  - <img src="screenshots/post_list.png" width="200">
+  - <img src="screenshots/post_detail.png" width="200">
+- **プロフィール編集**: ユーザー自分のプロフィールを編集できます。
+  - <img src="screenshots/profile.png" width="200">
+  - <img src="screenshots/profile_edit.png" width="200">
   
 
 ## 📱 画面構成
