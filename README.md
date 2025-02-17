@@ -4,21 +4,21 @@
 
 ## 🚀 機能一覧
 - **ユーザー認証**: Firebase Authentication を使用したメール認証。
-   - ![AuthScreen](screenshots/user_auth.png.png)
+   - <img src="screenshots/user_auth.png" width="200">
 - **チャット**: Firestore によるリアルタイムチャット。
-   - ![Alt text](screenshots/chat_list.png)
-   - ![Alt text](screenshots/chat_detail.png)
+   - <img src="screenshots/chat_list.png" width="200">
+   - <img src="screenshots/chat_detail.png" width="200">
 - **イベント管理**: 卓球イベントの作成・参加。
-   - ![Alt text](screenshots/create_evetnt.png)
-   - ![Alt text](screenshots/event_search.png)
-   - ![Alt text](screenshots/event_filter.png)
-   - ![Alt text](screenshots/filtered_event.png)
+   - <img src="screenshots/create_event.png" width="200">
+   - <img src="screenshots/event_search.png" width="200">
+   - <img src="screenshots/event_filter.png" width="200">
+   - <img src="screenshots/filtered_event.png" width="200">
 - **投稿機能**: ユーザーが画像付きの投稿を共有可能。
-  - ![Alt text](screenshots/post_list.png)
-  - ![Alt text](screenshots/post_detail.png)
-- **プロフィール編集**: ユーザー自分のプロフィールを編集できます
-  - ![Alt text](Profile.png)
-  - ![Alt text](profile_edit.png)
+  - <img src="screenshots/post_list.png" width="200">
+  - <img src="screenshots/post_detail.png" width="200">
+- **プロフィール編集**: ユーザー自分のプロフィールを編集できます。
+  - <img src="screenshots/profile.png" width="200">
+  - <img src="screenshots/profile_edit.png" width="200">
   
 
 ## 📱 画面構成
