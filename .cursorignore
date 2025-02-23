@@ -1,0 +1,27 @@
+# 機密情報
+.env
+secrets.json
+
+# ビルド生成物
+build/
+dist/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# 依存パッケージ
+node_modules/
+.pub-cache/
+
+# ログファイル
+logs/
+debug.log
+
+# 不要な設定ファイル
+.idea/
+.vscode/
+.DS_Store
+
+# 特定ディレクトリの除外
+src/private/
+lib/experimental/
