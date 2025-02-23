@@ -74,10 +74,8 @@ class AuthScreen extends StatelessWidget {
               const SizedBox(height: 20),
               Consumer(
                 builder: (context, ref, _) {
-                  final authViewModel =
-                      ref.watch(authViewModelProvider.notifier);
-                  final userViewModel =
-                      ref.watch(userViewModelProvider.notifier);
+                  final authViewModel = ref.watch(authViewModelProvider.notifier);
+                  final userViewModel = ref.watch(userViewModelProvider.notifier);
 
                   return ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -91,10 +89,12 @@ class AuthScreen extends StatelessWidget {
                         );
 
                         final userId = FirebaseAuth.instance.currentUser?.uid;
-                        if (userId != null) {
+                        if (userId != null && context.mounted) {
                           await userViewModel.fetchUser(userId);
-                          context.go('/home/events');
-                          authViewModel.errorMessage = null; // エラーメッセージをリセット
+                          if (context.mounted) {
+                            context.go('/home/events');
+                            authViewModel.errorMessage = null;
+                          }
                         }
                       } catch (e) {
                         authViewModel.errorMessage = "Sign In failed: $e";
@@ -109,10 +109,8 @@ class AuthScreen extends StatelessWidget {
               const SizedBox(height: 16),
               Consumer(
                 builder: (context, ref, _) {
-                  final authViewModel =
-                      ref.read(authViewModelProvider.notifier);
-                  final userViewModel =
-                      ref.read(userViewModelProvider.notifier);
+                  final authViewModel = ref.read(authViewModelProvider.notifier);
+                  final userViewModel = ref.read(userViewModelProvider.notifier);
 
                   return OutlinedButton(
                     style: OutlinedButton.styleFrom(
@@ -148,13 +146,13 @@ class AuthScreen extends StatelessWidget {
                           posts: [],
                         );
                         await userViewModel.createUser(newUser);
-                        context.go('/home/events');
-                        authViewModel.errorMessage = null; // エラーメッセージをリセット
+                        if (context.mounted) {
+                          context.go('/home/events');
+                          authViewModel.errorMessage = null;
+                        }
                       }
                     },
-                    child: const Text(
-                      'Sign Up'
-                    ),
+                    child: const Text('Sign Up'),
                   );
                 },
               ),
