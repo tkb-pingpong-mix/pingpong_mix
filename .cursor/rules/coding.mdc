@@ -1,0 +1,35 @@
+---
+description: 
+globs: 
+---
+
+    # Your rule content
+
+    - You can @ files here
+    - You can use markdown but dont have to
+
+    {
+    "indentation": {
+        "type": "spaces",
+        "size": 2
+    },
+    "namingConvention": {
+        "variables": "camelCase",
+        "functions": "camelCase",
+        "classes": "PascalCase"
+    },
+    "restrictedLibraries": [
+        "dart:io",
+        "package:flutter/services.dart"
+    ],
+    "prohibitHardcodedSecrets": true,
+    "enforceBestPractices": {
+        "asyncFunctions": true,
+        "errorHandling": true
+    },
+    "preferredStateManagement": "Riverpod",
+    "widgetGuidelines": {
+        "stateless": "for UI only",
+        "stateful": "for complex interactions"
+    }
+    }
