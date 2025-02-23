@@ -14,6 +14,10 @@ class MyApp extends StatelessWidget {
       theme: theme,
       debugShowCheckedModeBanner: false,
       routerConfig: appRouter.router,
+      supportedLocales: const [Locale('ja', ''), Locale('en', ''), Locale('zh', ''), Locale('ko', '')],
+      scrollBehavior: const MaterialScrollBehavior().copyWith(
+        physics: const BouncingScrollPhysics(),
+      ),
     );
   }
 }
