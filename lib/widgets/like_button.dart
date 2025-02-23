@@ -34,7 +34,7 @@ class _LikeButtonState extends State<LikeButton> {
   Future<void> _checkIfLiked() async {
     final likeRef = FirebaseFirestore.instance
         .collection('Likes')
-        .doc('$userId\_${widget.postId}');
+        .doc('${userId}_${widget.postId}');
     final doc = await likeRef.get();
 
     if (mounted) {
@@ -46,8 +46,9 @@ class _LikeButtonState extends State<LikeButton> {
 
   /// いいねの追加・削除
   Future<void> _toggleLike() async {
-    if (userId.isEmpty || isLiked == null)
+    if (userId.isEmpty || isLiked == null) {
       return; // `isLiked` が `null` の場合は処理しない
+    }
 
     setState(() {
       isLiked = !isLiked!;
@@ -56,7 +57,7 @@ class _LikeButtonState extends State<LikeButton> {
 
     final likeRef = FirebaseFirestore.instance
         .collection('Likes')
-        .doc('$userId\_${widget.postId}');
+        .doc('${userId}_${widget.postId}');
     final postRef =
         FirebaseFirestore.instance.collection('Posts').doc(widget.postId);
 

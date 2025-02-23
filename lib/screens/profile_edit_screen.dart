@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pingpong_mix/screens/post_list_screen.dart';
 import 'package:pingpong_mix/utils/image_upload.dart';
 import 'package:pingpong_mix/viewmodels/user_viewmodel.dart';
 import 'package:image_picker/image_picker.dart';

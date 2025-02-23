@@ -31,7 +31,7 @@ class LikeModel {
 
   Future<void> addLike(String postId, String userId) async {
     final likeRef =
-        FirebaseFirestore.instance.collection('Likes').doc('$userId\_$postId');
+        FirebaseFirestore.instance.collection('Likes').doc('${userId}_$postId');
     final postRef = FirebaseFirestore.instance.collection('Posts').doc(postId);
 
     await FirebaseFirestore.instance.runTransaction((transaction) async {

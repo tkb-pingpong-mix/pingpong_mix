@@ -6,7 +6,7 @@ import '../providers/event_filter_state_provider.dart';
 import '../viewmodels/event_viewmodel.dart';
 
 class FilterScreen extends ConsumerWidget {
-  const FilterScreen({Key? key}) : super(key: key);
+  const FilterScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

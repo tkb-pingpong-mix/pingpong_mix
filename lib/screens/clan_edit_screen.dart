@@ -9,8 +9,8 @@ class ClanEditScreen extends StatefulWidget {
 
 class _ClanEditScreenState extends State<ClanEditScreen> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
   void _saveClanDetails() {
     if (_formKey.currentState!.validate()) {
