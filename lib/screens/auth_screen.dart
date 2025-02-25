@@ -14,6 +14,8 @@ class AuthScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Email Authentication'),
@@ -27,11 +29,13 @@ class AuthScreen extends StatelessWidget {
               const Text(
                 'Welcome Back!',
                 textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
               const Text(
                 'Sign in to continue',
                 textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
               const SizedBox(height: 40),
               // エラーメッセージ表示用
@@ -39,11 +43,11 @@ class AuthScreen extends StatelessWidget {
                 builder: (context, ref, _) {
                   final errorMessage = ref.watch(authErrorProvider);
                   if (errorMessage == null) return const SizedBox.shrink();
-                  print("Error message set: $errorMessage");
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 16.0),
                     child: Text(
                       errorMessage,
+                      style: TextStyle(color: theme.colorScheme.error),
                     ),
                   );
                 },
@@ -52,7 +56,7 @@ class AuthScreen extends StatelessWidget {
                 controller: _emailController,
                 decoration: InputDecoration(
                   labelText: 'Email',
-                  prefixIcon: Icon(Icons.email),
+                  prefixIcon: Icon(Icons.email, color: theme.primaryColor),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
@@ -64,7 +68,7 @@ class AuthScreen extends StatelessWidget {
                 controller: _passwordController,
                 decoration: InputDecoration(
                   labelText: 'Password',
-                  prefixIcon: Icon(Icons.lock),
+                  prefixIcon: Icon(Icons.lock, color: theme.primaryColor),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
@@ -80,6 +84,7 @@ class AuthScreen extends StatelessWidget {
                   return ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      backgroundColor: theme.primaryColor,
                     ),
                     onPressed: () async {
                       try {
@@ -102,6 +107,7 @@ class AuthScreen extends StatelessWidget {
                     },
                     child: const Text(
                       'Sign In',
+                      style: TextStyle(color: Colors.white),
                     ),
                   );
                 },
@@ -115,7 +121,7 @@ class AuthScreen extends StatelessWidget {
                   return OutlinedButton(
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      side: BorderSide(),
+                      side: BorderSide(color: theme.primaryColor),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
