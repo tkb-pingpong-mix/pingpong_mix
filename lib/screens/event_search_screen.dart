@@ -13,6 +13,8 @@ class EventSearchScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        elevation: 2,
         leading: IconButton(
           icon: const Icon(Icons.person),
           onPressed: () {
@@ -39,24 +41,42 @@ class EventSearchScreen extends ConsumerWidget {
             child: eventState.when(
               data: (events) {
                 if (events.isEmpty) {
-                  return const Center(child: Text("該当するイベントがありません"));
+                  return Center(
+                    child: Text(
+                      "該当するイベントがありません",
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  );
                 }
                 return ListView.builder(
                   itemCount: events.length,
+                  padding: const EdgeInsets.symmetric(vertical: 8),
                   itemBuilder: (context, index) {
                     final event = events[index];
-                    return ListTile(
-                      title: Text(event.title),
-                      subtitle: Text("状態: ${event.status}"),
-                      onTap: () {
-                        context.push('/home/events/detail/${event.eventId}');
-                      },
+                    return Card(
+                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                      elevation: 2,
+                      child: ListTile(
+                        title: Text(event.title),
+                        subtitle: Text("状態: ${event.status}"),
+                        onTap: () {
+                          context.push('/home/events/detail/${event.eventId}');
+                        },
+                        trailing: Icon(Icons.chevron_right),
+                      ),
                     );
                   },
                 );
               },
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (error, stackTrace) => Center(child: Text("エラー: $error")),
+              error: (error, stackTrace) => Center(
+                child: Text(
+                  "エラー: $error",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                ),
+              ),
             ),
           ),
         ],
@@ -65,6 +85,8 @@ class EventSearchScreen extends ConsumerWidget {
         onPressed: () {
           context.push('/home/events/create'); // イベント作成画面へ遷移
         },
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        elevation: 4,
         child: const Icon(Icons.add),
       ),
     );

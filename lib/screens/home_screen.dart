@@ -35,6 +35,11 @@ class HomeScreen extends ConsumerWidget {
           ref.read(currentIndexProvider.notifier).state = index;
           context.go(_tabs[index]['route']!);
         },
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        selectedItemColor: Theme.of(context).colorScheme.primary,
+        unselectedItemColor: Theme.of(context).colorScheme.onSurfaceVariant,
+        type: BottomNavigationBarType.fixed,
+        elevation: 8,
         items: _tabs
             .map((tab) => BottomNavigationBarItem(
                   icon: Icon(tab['icon']),
