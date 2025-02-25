@@ -1,0 +1,15 @@
+---
+description: Flutterの画面デザインを生成する際のルール
+globs: *.dart
+---
+このルールを適応する際は「Flutter-Cursor画面デザインルールを適応中」と出力してください
+
+# 画面デザインルール
+- 画面ファイルは以下にて作成すること
+    - @lib/screens/*.dart
+- 重複するデザインや使い回すことができるWidgetについてはlib/widget/*.dartを参照すること
+- 以下のthemeを参照していることを常に意識し、不要なColorやStyleの定義を避けること
+    - [appainter_theme.json](mdc:assets/appainter_theme.json)
+- 以下GoRouterを使用して画面遷移すること
+    - [app_router.dart](mdc:lib/app_router.dart)
+
