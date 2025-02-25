@@ -72,6 +72,7 @@ class _EventCreateScreenState extends ConsumerState<EventCreateScreen> {
 
       final user = ref.watch(userViewModelProvider).value;
       if (user == null) {
+        if (!context.mounted) return; // contextを使用する前にチェック
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('ユーザー情報を取得できませんでした')),
         );
@@ -91,6 +92,8 @@ class _EventCreateScreenState extends ConsumerState<EventCreateScreen> {
         location: _locationController.text,
         venue: _venueController.text,
         organizerId: user.userId,
+        organizerName: user.displayName,
+        organizerProfileImageUrl: user.profilePicture,
         participants: [],
         matchHistory: [],
         eventType: _eventType,

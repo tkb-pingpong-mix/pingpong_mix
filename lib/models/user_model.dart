@@ -72,12 +72,8 @@ class AppUser {
       posts: List<String>.from(data['posts'] ?? []),
       followers: data['followers'],
       following: data['following'],
-      followersList: data['followersList'] != null
-          ? List<String>.from(data['followersList'])
-          : null,
-      followingList: data['followingList'] != null
-          ? List<String>.from(data['followingList'])
-          : null,
+      followersList: data['followersList'] != null ? List<String>.from(data['followersList']) : null,
+      followingList: data['followingList'] != null ? List<String>.from(data['followingList']) : null,
       racket: data['racket'],
       forehandRubber: data['forehandRubber'],
       backhandRubber: data['backhandRubber'],

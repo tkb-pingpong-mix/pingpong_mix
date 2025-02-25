@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class PostModel {
   final String postId;
   final String authorId;
+  final String authorName;
+  final String? authorProfileImageUrl;
   final String? title;
   final String content;
   final DateTime postedAt;
@@ -14,6 +16,8 @@ class PostModel {
   PostModel({
     required this.postId,
     required this.authorId,
+    required this.authorName,
+    this.authorProfileImageUrl,
     this.title,
     required this.content,
     required this.postedAt,
@@ -28,12 +32,12 @@ class PostModel {
     return PostModel(
       postId: doc.id,
       authorId: data['authorId'] ?? '',
+      authorName: data['authorName'] ?? '名無しさん',
+      authorProfileImageUrl: data['authorProfileImageUrl'],
       title: data['title'],
       content: data['content'] ?? '',
       postedAt: (data['postedAt'] as Timestamp).toDate(),
-      imageURLs: data['imageURLs'] != null
-          ? List<String>.from(data['imageURLs'])
-          : null,
+      imageURLs: data['imageURLs'] != null ? List<String>.from(data['imageURLs']) : null,
       linkedEventId: data['linkedEventId'],
       likesId: data['likes_id'] ?? '',
       likesCount: (data['likes_count'] ?? 0),
@@ -48,6 +52,8 @@ class PostModel {
     return PostModel(
       postId: postId,
       authorId: authorId,
+      authorName: authorName,
+      authorProfileImageUrl: authorProfileImageUrl,
       title: title ?? this.title,
       content: content,
       postedAt: postedAt,
@@ -61,6 +67,8 @@ class PostModel {
   Map<String, dynamic> toFirestore() {
     return {
       'authorId': authorId,
+      'authorName': authorName,
+      'authorProfileImageUrl': authorProfileImageUrl,
       if (title != null) 'title': title,
       'content': content,
       'postedAt': postedAt,

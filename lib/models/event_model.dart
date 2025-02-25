@@ -11,6 +11,8 @@ class EventModel {
   final String? venueId; // オプション: 卓球場ID（Venues コレクションと紐付け）
   final GeoPoint? geoPoint; // オプション: 緯度・経度
   final String organizerId; // 主催者ID
+  final String organizerName; // 主催者名
+  final String? organizerProfileImageUrl; // 主催者プロフィール画像URL（オプション）
   final List<String> participants; // 参加ユーザーIDリスト
   final List<String> matchHistory; // 試合IDリスト
   final String eventType; // "試合" / "練習" / "試打会" など
@@ -29,6 +31,8 @@ class EventModel {
     this.venueId, // オプション
     this.geoPoint, // オプション
     required this.organizerId, // 主催者ID
+    required this.organizerName, // 主催者名
+    this.organizerProfileImageUrl, // 主催者プロフィール画像URL（オプション）
     required this.participants,
     required this.matchHistory,
     required this.eventType,
@@ -49,10 +53,10 @@ class EventModel {
       location: data['location'] ?? '',
       venue: data['venue'] ?? '', // 会場名
       venueId: data['venueId'], // 卓球場ID（オプション）
-      geoPoint: data['geoPoint'] != null
-          ? data['geoPoint'] as GeoPoint
-          : null, // 緯度・経度（オプション）
+      geoPoint: data['geoPoint'] != null ? data['geoPoint'] as GeoPoint : null, // 緯度・経度（オプション）
       organizerId: data['organizerId'] ?? '', // 主催者ID
+      organizerName: data['organizerName'] ?? '', // 主催者名
+      organizerProfileImageUrl: data['organizerProfileImageUrl'], // 主催者プロフィール画像URL（オプション）
       participants: List<String>.from(data['participants'] ?? []),
       matchHistory: List<String>.from(data['matchHistory'] ?? []),
       eventType: data['eventType'] ?? 'match',
@@ -75,12 +79,13 @@ class EventModel {
       if (venueId != null) 'venueId': venueId, // 卓球場ID（オプション）
       if (geoPoint != null) 'geoPoint': geoPoint, // 緯度・経度（オプション）
       'organizerId': organizerId, // 主催者ID
+      'organizerName': organizerName, // 主催者名
+      'organizerProfileImageUrl': organizerProfileImageUrl, // 主催者プロフィール画像URL（オプション）
       'participants': participants,
       'matchHistory': matchHistory,
       'eventType': eventType,
       'isLeague': isLeague,
-      if (maxParticipants != null)
-        'maxParticipants': maxParticipants, // 最大参加人数（オプション）
+      if (maxParticipants != null) 'maxParticipants': maxParticipants, // 最大参加人数（オプション）
       'status': status, // 募集状態（英語表記）
     };
   }

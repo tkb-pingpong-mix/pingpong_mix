@@ -17,6 +17,8 @@ class PostCreateViewModel extends StateNotifier<AsyncValue<void>> {
       final newPost = PostModel(
         postId: '', // Firestore の `doc.id` を後で取得
         authorId: userId,
+        authorName: '', // 追加: 投稿者名
+        authorProfileImageUrl: '', // 追加: 投稿者プロフィール画像URL
         title: title?.isEmpty == true ? null : title,
         content: content,
         postedAt: DateTime.now(),
