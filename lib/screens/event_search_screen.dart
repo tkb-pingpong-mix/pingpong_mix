@@ -13,7 +13,13 @@ class EventSearchScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("イベント検索"),
+        leading: IconButton(
+          icon: const Icon(Icons.person),
+          onPressed: () {
+            context.go('/home/profile');
+          },
+        ),
+        title: const Text("Event Search"),
         actions: [
           IconButton(
             icon: const Icon(Icons.filter_alt),

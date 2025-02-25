@@ -13,8 +13,17 @@ class PostDetailsScreen extends StatelessWidget {
 
     if (post == null) {
       return Scaffold(
-        appBar: AppBar(title: const Text('投稿詳細')),
-        body: const Center(child: Text('エラー: 投稿が見つかりません')),
+        appBar: AppBar(
+          title: const Text('投稿詳細'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.person),
+              onPressed: () {
+                context.go('/home/profile');
+              },
+            ),
+          ],
+        ),
       );
     }
 
@@ -36,8 +45,7 @@ class PostDetailsScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   post.title!,
-                  style: const TextStyle(
-                      fontSize: 22, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
               ),
             if (hasImage)
@@ -61,8 +69,7 @@ class PostDetailsScreen extends StatelessWidget {
                         height: 250,
                         width: double.infinity,
                         color: Colors.grey,
-                        child: const Icon(Icons.image_not_supported,
-                            size: 50, color: Colors.white),
+                        child: const Icon(Icons.image_not_supported, size: 50, color: Colors.white),
                       ),
                     );
                   },
@@ -94,8 +101,7 @@ class PostDetailsScreen extends StatelessWidget {
                   ),
                   Text(
                     '${post.likesCount} いいね',
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),

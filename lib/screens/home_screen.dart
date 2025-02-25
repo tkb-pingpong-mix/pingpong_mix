@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:pingpong_mix/providers/auth_provider.dart';
-
 class AppIcons {
   static const IconData eventSearch = Icons.search;
   static const IconData posts = Icons.event;
@@ -28,29 +26,8 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final int currentIndex = ref.watch(currentIndexProvider);
-    final authViewModel = ref.read(authProvider.notifier);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Home'),
-        leading: IconButton(
-          icon: const Icon(Icons.person),
-          onPressed: () {
-            // Navigate to ProfileScreen using GoRouter
-            context.go('/home/profile');
-          },
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () async {
-              await authViewModel.signOut();
-              // Navigate to AuthScreen using GoRouter
-              context.go('/auth');
-            },
-          ),
-        ],
-      ),
       body: child,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
@@ -60,7 +37,7 @@ class HomeScreen extends ConsumerWidget {
         },
         items: _tabs
             .map((tab) => BottomNavigationBarItem(
-                  icon: Icon(tab['icon']), // 適切なアイコンに変更
+                  icon: Icon(tab['icon']),
                   label: tab['label'],
                 ))
             .toList(),

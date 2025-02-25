@@ -7,8 +7,7 @@ import '../models/post_model.dart';
 
 final postsProvider = StreamProvider.autoDispose<List<PostModel>>((ref) {
   return FirebaseFirestore.instance.collection('Posts').snapshots().map(
-        (snapshot) =>
-            snapshot.docs.map((doc) => PostModel.fromFirestore(doc)).toList(),
+        (snapshot) => snapshot.docs.map((doc) => PostModel.fromFirestore(doc)).toList(),
       );
 });
 
@@ -21,7 +20,13 @@ class PostListScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('投稿一覧'),
+        title: const Text('Post List'),
+        leading: IconButton(
+          icon: const Icon(Icons.person),
+          onPressed: () {
+            context.go('/home/profile');
+          },
+        ),
         centerTitle: true,
         elevation: 5,
       ),
