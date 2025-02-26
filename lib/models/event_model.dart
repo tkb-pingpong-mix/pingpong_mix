@@ -13,7 +13,7 @@ class EventModel {
   final String organizerId; // 主催者ID
   final String organizerName; // 主催者名
   final String? organizerProfileImageUrl; // 主催者プロフィール画像URL（オプション）
-  final List<String> participants; // 参加ユーザーIDリスト
+  final List<String> participants; // 参加者のリスト
   final List<String> matchHistory; // 試合IDリスト
   final String eventType; // "試合" / "練習" / "試打会" など
   final bool isLeague; // true: リーグ戦, false: 通常の試合
