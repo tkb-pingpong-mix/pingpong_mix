@@ -57,6 +57,9 @@ class EventSearchScreen extends ConsumerWidget {
                       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                       elevation: 2,
                       child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(event.organizerProfileImageUrl ?? ''),
+                        ),
                         title: Text(event.title),
                         subtitle: Text("状態: ${event.status}"),
                         onTap: () {

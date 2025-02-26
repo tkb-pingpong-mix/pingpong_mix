@@ -48,8 +48,7 @@ class PostCard extends StatelessWidget {
                     height: 200,
                     width: double.infinity,
                     color: Colors.grey,
-                    child: const Icon(Icons.image_not_supported,
-                        size: 50, color: Colors.white),
+                    child: const Icon(Icons.image_not_supported, size: 50, color: Colors.white),
                   ),
                 ),
               ),
@@ -92,8 +91,7 @@ class PostCard extends StatelessWidget {
             ),
           ),
           Padding(
-            padding:
-                const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 8.0),
+            padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
